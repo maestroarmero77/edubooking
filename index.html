@@ -284,10 +284,14 @@ async function fetchCloudReviewsRemote(schoolId){
   if(!isCloudConfigured()) return [];
   try{
     const { db, firestore } = await loadFirestore();
-    const { collection, query, where, getDocs, orderBy, limit } = firestore;
-    const q = query(collection(db,"reviews"), where("schoolId","==",schoolId), orderBy("fecha","desc"), limit(200));
+    const { collection, query, where, getDocs, limit } = firestore;
+    // Sin orderBy en el servidor: where + orderBy en campos distintos exige un
+    // índice compuesto que Firestore no crea solo. Ordenamos aquí tras recibir los datos.
+    const q = query(collection(db,"reviews"), where("schoolId","==",schoolId), limit(200));
     const snap = await getDocs(q);
-    return snap.docs.map(d=>d.data());
+    const docs = snap.docs.map(d=>d.data());
+    docs.sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+    return docs;
   }catch(e){ console.warn("Modo local (no se pudo sincronizar):", e.message); return []; }
 }
 async function pushCloudReview(schoolId, review){

@@ -368,6 +368,16 @@ async function fetchCloudReviewsRemote(schoolId){
     return docs;
   }catch(e){ console.warn("Modo local (no se pudo sincronizar):", e.message); return []; }
 }
+async function fetchRecentReviewsRemote(limitN){
+  if(!isCloudConfigured()) return [];
+  try{
+    const { db, firestore } = await loadFirestore();
+    const { collection, query, orderBy, limit, getDocs } = firestore;
+    const q = query(collection(db,"reviews"), orderBy("fecha","desc"), limit(limitN));
+    const snap = await getDocs(q);
+    return snap.docs.map(d=>d.data());
+  }catch(e){ console.warn("No se pudieron cargar las opiniones recientes de la comunidad:", e.message); return []; }
+}
 async function pushCloudReview(schoolId, review){
   if(!isCloudConfigured()) return false;
   try{
@@ -1687,10 +1697,20 @@ function allReviews(s){
   return [...own, ...cloudOnly, ...(s.opiniones||[])];
 }
 function recentReviews(limit=6){
+  // Solo opiniones reales (propias + sincronizadas) — nunca las de ejemplo de fábrica.
   const flat = [];
-  SCHOOLS.forEach(s => { allReviews(s).forEach(r => flat.push({ ...r, school: s })); });
+  SCHOOLS.forEach(s => { getCommunityReviews(s.id).forEach(r => flat.push({ ...r, school: s })); });
   flat.sort((a,b) => (b.fecha||"").localeCompare(a.fecha||""));
   return flat.slice(0, limit);
+}
+function recentReviewsHTML(list){
+  if(!list.length) return `<p class="muted" style="grid-column:1/-1">Todavía no hay opiniones publicadas — sé el primero en valorar un centro.</p>`;
+  return list.map(r => `
+    <a href="#/colegio/${r.school.id}" class="recent-review-card">
+      <div class="top"><span class="stars">${"★".repeat(Math.round(r.nota/2))}${"☆".repeat(5-Math.round(r.nota/2))}</span><span class="muted">${r.fecha}</span></div>
+      <p>${(r.texto||"").slice(0,140)}${(r.texto||"").length>140?"…":""}</p>
+      <div class="who">${r.autor} · <strong>${r.school.nombre}</strong></div>
+    </a>`).join("");
 }
 function cap(str){ return str.charAt(0).toUpperCase()+str.slice(1); }
 function el(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
@@ -1825,27 +1845,30 @@ function renderHome(){
       ${searchPanelHTML()}
     </div></section>
     <section class="section container">
-      <div class="section-head"><div><span class="eyebrow">Explora Galicia</span><h2>Mejor valorados</h2></div><span class="muted">${SCHOOLS.length} centros de ejemplo</span></div>
+      <div class="section-head">
+        <div><span class="eyebrow">La comunidad opina</span><h2>Opiniones recientes</h2></div>
+        <a href="#/rankings" class="btn btn-ghost">Ver rankings →</a>
+      </div>
+      <div class="recent-reviews-grid" id="recent-reviews-grid">${recentReviewsHTML(recentReviews(8))}</div>
+    </section>
+    <section class="section container">
+      <div class="section-head"><div><span class="eyebrow">Explora Galicia</span><h2>Mejor valorados</h2></div><span class="muted">${SCHOOLS.length} centros</span></div>
       <div class="stage-chips" id="home-type-chips" style="margin-bottom:16px">
         <button type="button" class="chip is-active" data-tipo="">Todos</button>
         ${HOME_TYPES.map(t=>`<button type="button" class="chip" data-tipo="${t}">${t}</button>`).join("")}
       </div>
       <div class="school-grid" id="destacados-grid"></div>
-    </section>
-    <section class="section container">
-      <div class="section-head">
-        <div><span class="eyebrow">La comunidad opina</span><h2>Opiniones recientes</h2></div>
-        <a href="#/rankings" class="btn btn-ghost">Ver rankings →</a>
-      </div>
-      <div class="recent-reviews-grid">
-        ${recentReviews(6).map(r=>`
-          <a href="#/colegio/${r.school.id}" class="recent-review-card">
-            <div class="top"><span class="stars">${"★".repeat(Math.round(r.nota/2))}${"☆".repeat(5-Math.round(r.nota/2))}</span><span class="muted">${r.fecha}</span></div>
-            <p>${(r.texto||"").slice(0,140)}${(r.texto||"").length>140?"…":""}</p>
-            <div class="who">${r.autor} · <strong>${r.school.nombre}</strong></div>
-          </a>`).join("")}
-      </div>
     </section>`;
+
+  if(isCloudConfigured()){
+    fetchRecentReviewsRemote(8).then(cloudReviews => {
+      if(!cloudReviews.length) return;
+      const withSchool = cloudReviews.map(r => ({ ...r, school: SCHOOLS.find(s=>s.id===r.schoolId) })).filter(r=>r.school);
+      if(!withSchool.length) return;
+      const grid = document.getElementById("recent-reviews-grid");
+      if(grid) grid.innerHTML = recentReviewsHTML(withSchool.slice(0,8));
+    });
+  }
 
   function paint(tipo){
     const grid = document.getElementById("destacados-grid");
@@ -2396,6 +2419,10 @@ function renderMiniCadp(){
   function paintSearch(){
     const q = qInput.value.toLowerCase().trim();
     const tipo = tipoSelect.value;
+    if(!q && !tipo){
+      searchResults.innerHTML = emptyState("Busca un centro", "Escribe un nombre, localidad o concello, o filtra por tipo, para empezar a marcar los de la oferta de esta semana.");
+      return;
+    }
     let list = SCHOOLS.filter(s => {
       if(q && !(s.nombre.toLowerCase().includes(q) || s.localidad.toLowerCase().includes(q))) return false;
       if(tipo && s.tipo!==tipo) return false;

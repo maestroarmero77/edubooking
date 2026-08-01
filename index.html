@@ -117,6 +117,11 @@ h1,h2,h3 { font-family:var(--font-display); font-weight:700; margin:0 0 .4em; }
 .minicadp-row-toggle { flex-shrink:0; padding:5px 10px; font-size:.78rem; white-space:nowrap; }
 @media (max-width:480px) { .minicadp-row-meta { white-space:normal; } }
 .minicadp-map { height:380px; border-radius:var(--radius-m); overflow:hidden; border:1px solid var(--line); margin-top:8px; }
+
+.merece-current-card { background:var(--teal-strong); color:#fff; border-radius:var(--radius-m); padding:20px; margin-bottom:20px; }
+.merece-current-label { font-size:.74rem; text-transform:uppercase; letter-spacing:.06em; opacity:.8; }
+.merece-current-name { font-size:1.2rem; font-weight:700; margin:4px 0 10px; }
+.merece-current-stats { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
 @media (max-width:900px) {
   .minicadp-layout { grid-template-columns:1fr; }
   .minicadp-search-results { max-height:320px; }
@@ -196,7 +201,65 @@ details.rating-group .rating-inputs { padding:2px 12px 12px; }
 
 .selo { width:82px; height:82px; border-radius:50%; border:3px double var(--stamp); color:var(--stamp); display:flex; flex-direction:column; align-items:center; justify-content:center; transform:rotate(-8deg); font-family:var(--font-mono); flex-shrink:0; }
 .selo .num { font-size:1.5rem; font-weight:700; line-height:1; }
+.selo .den { font-size:.6rem; opacity:.8; }
 .selo .label { font-size:.5rem; text-transform:uppercase; letter-spacing:.06em; margin-top:2px; }
+
+/* ---------- IRD — Índice de Recomendación Docente (dato protagonista) ---------- */
+.ird-selo { width:108px; height:108px; border-radius:50%; border:4px solid var(--teal); background:var(--teal-tint); color:var(--teal); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; text-align:center; }
+.ird-pct { font-size:2rem; font-weight:800; line-height:1; font-family:var(--font-mono); }
+.ird-pct-empty { font-size:1.5rem; opacity:.6; }
+.ird-caption { font-size:.64rem; text-transform:uppercase; letter-spacing:.04em; margin-top:4px; line-height:1.25; }
+.star-selo { width:68px; height:68px; border-width:2px; border-color:var(--teal); color:var(--teal); }
+.star-selo .num { font-size:1.15rem; }
+.star-selo .den { font-size:.58rem; }
+.star-selo .label { font-size:.48rem; }
+@media (max-width:560px) { .ird-selo { width:84px; height:84px; } .ird-pct { font-size:1.5rem; } .star-selo { width:56px; height:56px; } }
+
+.stars { color:var(--ochre); letter-spacing:2px; font-size:.95rem; }
+.stars-empty { color:var(--ink-soft); font-size:.82rem; letter-spacing:normal; }
+
+.rating-summary { display:flex; flex-wrap:wrap; gap:28px; align-items:center; margin-bottom:20px; }
+.rating-summary-main { text-align:center; min-width:140px; }
+.rating-summary-stars { font-size:1.6rem; color:var(--ochre); letter-spacing:3px; }
+.rating-summary-num { font-family:var(--font-mono); font-size:1.6rem; font-weight:800; margin-top:2px; }
+.rating-distribution { flex:1; min-width:220px; display:flex; flex-direction:column; gap:5px; }
+.dist-row { display:flex; align-items:center; gap:8px; font-size:.8rem; }
+.dist-star { width:30px; color:var(--ink-soft); font-family:var(--font-mono); }
+.dist-bar { flex:1; height:8px; background:var(--line); border-radius:4px; overflow:hidden; }
+.dist-bar > i { display:block; height:100%; background:var(--ochre); }
+.dist-count { width:22px; text-align:right; font-family:var(--font-mono); color:var(--ink-soft); }
+
+.confidence-box { background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:14px 18px; margin-bottom:22px; }
+.confidence-label { font-size:.78rem; font-weight:700; margin-bottom:6px; }
+.confidence-bar { height:8px; background:var(--line); border-radius:4px; overflow:hidden; }
+.confidence-bar > i { display:block; height:100%; background:var(--teal); }
+
+.category-stars-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
+.category-star-item { display:flex; align-items:center; gap:10px; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-s); padding:10px 14px; }
+.category-star-item .cat-icon { font-size:1.2rem; flex-shrink:0; }
+.category-star-item .cat-info { flex:1; min-width:0; }
+.category-star-item .cat-label { font-size:.78rem; color:var(--ink-soft); margin-bottom:2px; }
+.category-star-item .cat-val { font-family:var(--font-mono); font-weight:700; }
+
+.star-picker { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; padding:6px 0; }
+.star-picker-label { font-size:.88rem; flex:1; min-width:180px; }
+.star-picker-stars { display:flex; gap:2px; }
+.star-btn { background:none; border:none; cursor:pointer; font-size:1.6rem; line-height:1; color:var(--line); padding:2px; transition:color .1s ease, transform .1s ease; }
+.star-btn:hover { transform:scale(1.15); }
+.star-btn.is-filled { color:var(--ochre); }
+
+.volveria-picker { background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:14px 16px; }
+.volveria-question { font-weight:700; margin-bottom:10px; }
+.volveria-options { display:flex; gap:10px; }
+.volveria-btn { flex:1; padding:10px; border-radius:var(--radius-s); border:1.5px solid var(--line); background:var(--paper); font-weight:600; cursor:pointer; font-size:.92rem; }
+.volveria-btn.is-active[data-volveria="true"] { background:var(--teal-tint); border-color:var(--teal); color:var(--teal); }
+.volveria-btn.is-active[data-volveria="false"] { background:rgba(166,64,47,.12); border-color:var(--stamp); color:var(--stamp); }
+
+.review-card-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+.review-nota-num { font-family:var(--font-mono); color:var(--ink-soft); font-size:.85rem; }
+.volveria-badge { font-size:.76rem; padding:3px 10px; border-radius:999px; font-weight:600; }
+.volveria-badge.is-yes { background:var(--teal-tint); color:var(--teal); }
+.volveria-badge.is-no { background:rgba(166,64,47,.12); color:var(--stamp); }
 
 .school-hero { background:var(--teal-strong); color:#fff; padding:30px 0 24px; }
 .school-hero .container { display:flex; flex-direction:column; gap:4px; }
@@ -299,9 +362,9 @@ details.rating-group .rating-inputs { padding:2px 12px 12px; }
       <a href="#/">Inicio</a>
       <a href="#/buscar">Buscar</a>
       <a href="#/mapa">Mapa</a>
-      <a href="#/cerca">Cerca de mí</a>
+      <a href="#/cerca">Descubre tu colegio</a>
+      <a href="#/merece-la-pena">¿Merece la pena cambiar?</a>
       <a href="#/minicadp">Mini CADP</a>
-      <a href="#/rankings">Rankings</a>
       <a href="#/favoritos">Favoritos</a>
     </nav>
     <button class="theme-toggle" id="theme-toggle" title="Cambiar tema">🌙</button>
@@ -1488,26 +1551,33 @@ const LOCALIDADES_POR_PROVINCIA = (() => {
   return out;
 })();
 
-const SCORE_LABELS = {
-  direccion:"Dirección", companeros:"Compañeros", ambienteLaboral:"Ambiente laboral", secretaria:"Secretaría",
-  conserjeria:"Conserjería", alumnado:"Alumnado", familias:"Familias", organizacion:"Organización",
-  burocracia:"Burocracia", recursos:"Recursos", materialTic:"Material TIC", instalaciones:"Instalaciones",
-  limpieza:"Limpieza", comedor:"Comedor", biblioteca:"Biblioteca", gimnasio:"Gimnasio", patio:"Patio",
-  aparcamiento:"Aparcamiento", coberturaMovil:"Cobertura móvil", accesibilidad:"Accesibilidad",
-  comunicacion:"Comunicación", acogidaSustituto:"Acogida al sustituto"
-};
-const CATEGORY_GROUPS = [
-  { label:"Equipo y ambiente", cats:["direccion","companeros","ambienteLaboral","secretaria","conserjeria","comunicacion","acogidaSustituto"] },
-  { label:"Convivencia", cats:["alumnado","familias"] },
-  { label:"Organización", cats:["organizacion","burocracia"] },
-  { label:"Recursos e instalaciones", cats:["recursos","materialTic","instalaciones","limpieza","comedor","biblioteca","gimnasio","patio"] },
-  { label:"Logística", cats:["aparcamiento","coberturaMovil","accesibilidad"] }
+// scores — Sistema de valoración por estrellas (1-5) + Índice de Recomendación
+// Docente (IRD). Sustituye al antiguo sistema de 22 sliders 0-10.
+const CATEGORIES = [
+  { key: "ambiente", label: "Ambiente entre compañeros", icon: "🤝" },
+  { key: "direccion", label: "Relación con el equipo directivo", icon: "🧑‍💼" },
+  { key: "organizacion", label: "Organización del centro", icon: "🗂️" },
+  { key: "convivencia", label: "Convivencia del alumnado", icon: "🎒" },
+  { key: "recursos", label: "Recursos e instalaciones", icon: "🏫" },
+  { key: "burocracia", label: "Carga burocrática (5 = muy ligera)", icon: "📋" }
 ];
+const PRIOR_MEAN = 3.5;
+const PRIOR_WEIGHT = 5;
+function averageOf(scoresDict){
+  const vals = Object.values(scoresDict).filter(v => typeof v === "number");
+  if(!vals.length) return null;
+  return vals.reduce((a,b)=>a+b,0) / vals.length;
+}
 function recommendationLevel(avg){
   if(avg==null) return { emoji:"⚪", label:"Sin valorar todavía", tone:"neutral" };
-  if(avg>=8) return { emoji:"🟢", label:"Muy recomendable para sustituciones", tone:"good" };
-  if(avg>=6) return { emoji:"🟡", label:"Recomendable", tone:"mid" };
+  if(avg>=4) return { emoji:"🟢", label:"Muy recomendable", tone:"good" };
+  if(avg>=3) return { emoji:"🟡", label:"Recomendable", tone:"mid" };
   return { emoji:"🔴", label:"Poco recomendable", tone:"bad" };
+}
+function starsHTML(value){
+  if(value==null) return `<span class="stars stars-empty">Sin valorar</span>`;
+  const full = Math.max(0, Math.min(5, Math.round(value)));
+  return `<span class="stars">${"★".repeat(full)}${"☆".repeat(5-full)}</span>`;
 }
 const SERVICE_LABELS = { comedor:"Comedor", transporte:"Transporte escolar", pabellon:"Pabellón", aulasDigitales:"Aulas dixitais" };
 
@@ -1671,25 +1741,26 @@ function clearCompare(){ writeJSON("edubk_lite_compare", []); }
 /* ---------- Utilidades ---------- */
 const root = document.getElementById("view-root");
 const navLinks = document.querySelectorAll(".main-nav a");
-function avgScore(scores){ const v=Object.values(scores); return v.reduce((a,b)=>a+b,0)/v.length; }
-const BASE_WEIGHT = 12; // peso implícito de la puntuación base de cada centro
-const ALL_CATEGORIES = ["direccion","companeros","ambienteLaboral","secretaria","conserjeria","alumnado","familias","organizacion","burocracia","recursos","materialTic","instalaciones","limpieza","comedor","biblioteca","gimnasio","patio","aparcamiento","coberturaMovil","accesibilidad","comunicacion","acogidaSustituto"];
-function computeScores(s){
-  const userScored = getCommunityReviews(s.id).filter(r=>r.scores);
-  const hasBase = !!s.scores;
-  if(!hasBase && userScored.length===0) return null;
-  const categories = hasBase ? Object.keys(s.scores) : ALL_CATEGORIES;
-  const result = {};
-  categories.forEach(cat=>{
-    const base = hasBase ? s.scores[cat] : null;
-    const extra = userScored.map(r=>r.scores[cat]).filter(v=>typeof v==="number");
-    if(base==null && extra.length===0) return;
-    const totalWeight = (base!=null ? BASE_WEIGHT : 0) + extra.length;
-    const sum = (base!=null ? base*BASE_WEIGHT : 0) + extra.reduce((a,b)=>a+b,0);
-    result[cat] = sum/totalWeight;
+function computeScores(school){
+  const reviews = getCommunityReviews(school.id).filter(r => typeof r.nota === "number");
+  const n = reviews.length;
+  if(!n) return null;
+  const sum = reviews.reduce((a,r)=>a+r.nota,0);
+  const avgRaw = sum/n;
+  const avg = (PRIOR_MEAN*PRIOR_WEIGHT + sum) / (PRIOR_WEIGHT + n);
+  const categories = {};
+  CATEGORIES.forEach(({key}) => {
+    const vals = reviews.map(r => r.scores && r.scores[key]).filter(v => typeof v === "number");
+    if(vals.length) categories[key] = vals.reduce((a,b)=>a+b,0)/vals.length;
   });
-  return Object.keys(result).length ? result : null;
+  const distribution = [0,0,0,0,0];
+  reviews.forEach(r => { const star = Math.min(5,Math.max(1,Math.round(r.nota))); distribution[star-1]++; });
+  const withVolveria = reviews.filter(r => typeof r.volveria === "boolean");
+  const ird = withVolveria.length ? Math.round(withVolveria.filter(r=>r.volveria).length/withVolveria.length*100) : null;
+  const confidence = n>=10 ? {label:"Alto",pct:100} : n>=4 ? {label:"Medio",pct:60} : {label:"Bajo",pct:25};
+  return { n, avgRaw, avg, categories, distribution, ird, confidence };
 }
+function avgScore(computed){ return computed ? computed.avg : null; }
 function allReviews(s){
   const own = getUserReviews(s.id);
   const ownIds = new Set(own.map(r=>r.revId).filter(Boolean));
@@ -1707,8 +1778,8 @@ function recentReviewsHTML(list){
   if(!list.length) return `<p class="muted" style="grid-column:1/-1">Todavía no hay opiniones publicadas — sé el primero en valorar un centro.</p>`;
   return list.map(r => `
     <a href="#/colegio/${r.school.id}" class="recent-review-card">
-      <div class="top"><span class="stars">${"★".repeat(Math.round(r.nota/2))}${"☆".repeat(5-Math.round(r.nota/2))}</span><span class="muted">${r.fecha}</span></div>
-      <p>${(r.texto||"").slice(0,140)}${(r.texto||"").length>140?"…":""}</p>
+      <div class="top">${starsHTML(r.nota)}<span class="muted">${r.fecha}</span></div>
+      ${r.texto ? `<p>${r.texto.slice(0,140)}${r.texto.length>140?"…":""}</p>` : `<p class="muted">${typeof r.volveria==="boolean" ? (r.volveria ? "👍 Volvería a trabajar aquí" : "👎 No volvería a trabajar aquí") : ""}</p>`}
       <div class="who">${r.autor} · <strong>${r.school.nombre}</strong></div>
     </a>`).join("");
 }
@@ -1725,7 +1796,7 @@ function schoolCard(s){
   const computed = computeScores(s);
   const avg = computed ? avgScore(computed) : null;
   const rec = recommendationLevel(avg);
-  const n = allReviews(s).length;
+  const n = getCommunityReviews(s.id).length;
   const fav = isFavorite(s.id);
   const comparing = isComparing(s.id);
   return `
@@ -1739,6 +1810,7 @@ function schoolCard(s){
         <h3>${s.nombre}</h3>
         <div class="place">${s.localidad}, ${s.provincia}</div>
         <div class="rating-row"><span class="rating-pill ${avg?"":"rating-pill-empty"}">${avg!=null ? avg.toFixed(1) : "—"}</span><span class="count">${n} opinión${n===1?"":"es"}</span></div>
+        ${computed && computed.ird!=null ? `<div class="quick-icons"><span>👍 ${computed.ird}% volvería</span></div>` : ""}
         <button class="compare-btn ${comparing?"is-active":""}" data-compare="${s.id}">${comparing?"✓ En comparativa":"⇄ Comparar"}</button>
       </div>
     </a>`;
@@ -1816,9 +1888,9 @@ function navigate(){
   else if(path==="/favoritos") renderFavorites();
   else if(path==="/mapa") renderMap();
   else if(path==="/cerca") renderCerca(params);
+  else if(path==="/merece-la-pena") renderMerecePena(params);
   else if(path==="/minicadp") renderMiniCadp();
   else if(path==="/comparar") renderCompare();
-  else if(path==="/rankings") renderRankings();
   else if(path==="/admin") renderAdmin();
   else renderNotFound();
   updateCompareBar();
@@ -1847,7 +1919,7 @@ function renderHome(){
     <section class="section container">
       <div class="section-head">
         <div><span class="eyebrow">La comunidad opina</span><h2>Opiniones recientes</h2></div>
-        <a href="#/rankings" class="btn btn-ghost">Ver rankings →</a>
+        <a href="#/cerca" class="btn btn-ghost">Descubre tu colegio →</a>
       </div>
       <div class="recent-reviews-grid" id="recent-reviews-grid">${recentReviewsHTML(recentReviews(8))}</div>
     </section>
@@ -1969,69 +2041,6 @@ function renderSearch(params){
   document.getElementById("jornada").addEventListener("change", ()=>paint(qInput.value, document.getElementById("provincia").value, document.getElementById("tipo").value, document.getElementById("jornada").value));
 }
 
-const RANKING_CATS = [
-  { key:"ambienteLaboral", label:"Mejor ambiente laboral" },
-  { key:"direccion", label:"Mejores direcciones" },
-  { key:"burocracia", label:"Menos burocracia" },
-  { key:"instalaciones", label:"Mejores instalaciones" },
-  { key:"organizacion", label:"Mejor organización" },
-  { key:"acogidaSustituto", label:"Mejor acogida al sustituto" }
-];
-function renderRankings(){
-  const PROVINCIAS = ["A Coruña","Lugo","Ourense","Pontevedra"];
-  const TIPOS = ["CEIP","CPI","IES","CRA","CEE","EEI","EOI","CIFP","CMUS"];
-
-  function ratedList(provincia, tipo){
-    return SCHOOLS
-      .filter(s => (!provincia || s.provincia===provincia) && (!tipo || s.tipo===tipo))
-      .map(s=>({s, computed: computeScores(s)}))
-      .filter(x=>x.computed);
-  }
-  function topFive(rated, catKey){
-    return rated.filter(x=>x.computed[catKey]!=null).sort((a,b)=>b.computed[catKey]-a.computed[catKey]).slice(0,5);
-  }
-
-  root.innerHTML = `
-    <section class="section container">
-      <div class="section-head">
-        <div><span class="eyebrow">La comunidad opina</span><h2>Rankings</h2></div>
-      </div>
-      <form class="search-panel" id="rankings-filters" style="margin-bottom:20px">
-        <div class="search-row" style="grid-template-columns:1fr 1fr">
-          <div class="field"><label for="rk-provincia">Provincia</label>
-            <select id="rk-provincia"><option value="">Todas</option>${PROVINCIAS.map(p=>`<option>${p}</option>`).join("")}</select>
-          </div>
-          <div class="field"><label for="rk-tipo">Tipo de centro</label>
-            <select id="rk-tipo"><option value="">Todos</option>${TIPOS.map(t=>`<option>${t}</option>`).join("")}</select>
-          </div>
-        </div>
-      </form>
-      <div id="rankings-results"></div>
-    </section>`;
-
-  function paint(){
-    const provincia = document.getElementById("rk-provincia").value;
-    const tipo = document.getElementById("rk-tipo").value;
-    const rated = ratedList(provincia, tipo);
-    document.getElementById("rankings-results").innerHTML = `
-      <p class="muted" style="margin-bottom:14px">Basado en ${rated.length} centro${rated.length===1?"":"s"}${provincia?` de ${provincia}`:""}${tipo?` (${tipo})`:""} con valoraciones</p>
-      <div class="ranking-grid">
-        ${RANKING_CATS.map(({key,label})=>`
-          <div class="ranking-card">
-            <h3>${label}</h3>
-            <ol>
-              ${topFive(rated, key).map(({s,computed})=>`
-                <li><a href="#/colegio/${s.id}">${s.nombre}</a><span class="val">${computed[key].toFixed(1)}</span></li>
-              `).join("") || `<li class="muted">Sin datos suficientes todavía</li>`}
-            </ol>
-          </div>
-        `).join("")}
-      </div>`;
-  }
-  paint();
-  document.getElementById("rk-provincia").addEventListener("change", paint);
-  document.getElementById("rk-tipo").addEventListener("change", paint);
-}
 
 function renderCompare(){
   const ids = getCompareIds();
@@ -2069,13 +2078,14 @@ function renderCompare(){
 
   const datosList = schools.map(s => getDatosObjetivos(s));
 
-  const avgRow = numRow("Nota media", (s,i)=>avgList[i]);
+  const avgRow = numRow("Nota media (★/5)", (s,i)=>avgList[i]);
+  const irdRow = `<tr><th>Volverían a trabajar aquí</th>${schools.map((s,i)=>{ const ird = computedList[i] ? computedList[i].ird : null; return `<td>${ird!=null ? ird+"%" : "—"}</td>`; }).join("")}</tr>`;
   const recRow = `<tr><th>Recomendación</th>${schools.map((s,i)=>{ const rec=recommendationLevel(avgList[i]); return `<td><span class="rec-banner tone-${rec.tone}" style="font-size:.72rem;padding:3px 8px">${rec.emoji} ${rec.label}</span></td>`; }).join("")}</tr>`;
 
-  const categoryRows = CATEGORY_GROUPS.map(group => `
-    <tr class="compare-group-row"><th colspan="${schools.length+1}">${group.label}</th></tr>
-    ${group.cats.map(cat => numRow(SCORE_LABELS[cat], (s,i)=>computedList[i] ? computedList[i][cat] : null)).join("")}
-  `).join("");
+  const categoryRows = `
+    <tr class="compare-group-row"><th colspan="${schools.length+1}">Valoración por categorías</th></tr>
+    ${CATEGORIES.map(({key,label}) => numRow(label, (s,i)=>computedList[i] ? computedList[i].categories[key] : null)).join("")}
+  `;
 
   const factRows = [
     textRow("Tipo", (s)=>s.tipo),
@@ -2113,6 +2123,7 @@ function renderCompare(){
           </thead>
           <tbody>
             ${avgRow}
+            ${irdRow}
             ${recRow}
             ${factRows}
             ${datosObjetivosRows}
@@ -2202,8 +2213,8 @@ function ensureLeaflet(){
   return leafletLoading;
 }
 function scoreColor(avg){
-  if(avg>=8) return "#3F6B4E";
-  if(avg>=6) return "#C1732E";
+  if(avg>=4) return "#3F6B4E";
+  if(avg>=3) return "#C1732E";
   return "#A6402F";
 }
 let mapRenderToken = 0;
@@ -2213,14 +2224,59 @@ function jornadaLabel(s){
   if(!serv || !serv[3]) return null;
   return serv[3];
 }
+function estimateMinutes(km){
+  if(km==null) return null;
+  const speedKmH = km<6 ? 32 : km<20 ? 48 : 70;
+  return Math.max(1, Math.round(km/speedKmH*60));
+}
+function minutesLabel(min){ return min!=null ? `${min} min` : "—"; }
+
+// Tiempo real por carretera (OSRM, servidor público basado en OpenStreetMap).
+// La línea recta falla mucho en Galicia por rías y zonas de montaña, así que
+// se pide la ruta real para los centros candidatos y, si falla la conexión,
+// se completa con la estimación en línea recta de arriba.
+async function fetchRoadMinutesBatch(origin, points){
+  const CHUNK = 24;
+  const result = new Array(points.length).fill(null);
+  for(let i=0; i<points.length; i+=CHUNK){
+    const chunk = points.slice(i, i+CHUNK);
+    const coordsStr = [origin, ...chunk].map(p => `${p.lng.toFixed(5)},${p.lat.toFixed(5)}`).join(";");
+    const url = `https://router.project-osrm.org/table/v1/driving/${coordsStr}?sources=0&annotations=duration`;
+    try{
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if(data && data.code==="Ok" && data.durations && data.durations[0]){
+        const row = data.durations[0];
+        for(let j=0; j<chunk.length; j++){
+          const sec = row[j+1];
+          result[i+j] = sec!=null ? Math.max(1, Math.round(sec/60)) : null;
+        }
+      }
+    }catch(e){ /* se completa con la estimación en línea recta */ }
+  }
+  return result;
+}
+
+function smartScore(computed, minutes){
+  const proxScore = minutes==null ? 0.5 : Math.max(0, 1-minutes/50);
+  const irdScore = computed && computed.ird!=null ? computed.ird/100 : 0.45;
+  const ratingScore = computed ? computed.avg/5 : 0.45;
+  const confScore = computed ? computed.confidence.pct/100 : 0;
+  return proxScore*0.32 + irdScore*0.30 + ratingScore*0.23 + confScore*0.15;
+}
+function centerSizeCategory(school){ return getDatosObjetivos(school).tamano.unidades>=10 ? "grande" : "pequeno"; }
 
 function renderCerca(params){
   const provinciaSel = params.get("provincia") || "";
   const localidadSel = params.get("localidad") || "";
   const tipo = params.get("tipo") || "";
   const jornadaFiltro = params.get("jornada") || "";
+  const tiempoMax = params.get("tiempo") || "";
+  const comedorFiltro = params.get("comedor")==="1";
+  const tamanoFiltro = params.get("tamano") || "";
   const town = provinciaSel && localidadSel ? (LOCALIDADES_POR_PROVINCIA[provinciaSel]||[]).find(l=>l.name===localidadSel) : null;
   const tipos = ["CEIP","CPI","IES","CRA","CEE","EEI","EOI","CIFP","CMUS"];
+  const TIEMPOS = [10,15,20,30,45,60];
 
   function localidadOptionsHTML(provincia, selected){
     const list = LOCALIDADES_POR_PROVINCIA[provincia] || [];
@@ -2230,9 +2286,9 @@ function renderCerca(params){
 
   root.innerHTML = `
     <section class="section container">
-      <span class="eyebrow">Calculadora de kilómetros</span>
-      <h1>Centros cerca de ti</h1>
-      <p class="lead">Indica tu localidad de residencia y ordenamos todos los centros según la distancia estimada por carretera, con su valoración y tipo de xornada al lado.</p>
+      <span class="eyebrow">¿Cuál merece más la pena?</span>
+      <h1>Descubre tu colegio</h1>
+      <p class="lead">Indica dónde vives y te ordenamos los centros cercanos por lo que de verdad importa: cercanía, si los docentes volverían a trabajar allí, y su valoración.</p>
       <form class="search-panel" id="cerca-form">
         <div class="search-row" style="grid-template-columns:1fr 1fr">
           <div class="field"><label for="cerca-provincia">Provincia de residencia</label>
@@ -2240,13 +2296,20 @@ function renderCerca(params){
           <div class="field"><label for="cerca-localidad">Localidad de residencia</label>
             <select id="cerca-localidad" ${provinciaSel?"":"disabled"}>${localidadOptionsHTML(provinciaSel, localidadSel)}</select></div>
         </div>
-        <div class="search-row" style="grid-template-columns:1fr 1fr">
+        <div class="search-row" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="field"><label for="cerca-tiempo">Tiempo máximo en coche</label>
+            <select id="cerca-tiempo"><option value="">Sin límite</option>${TIEMPOS.map(m=>`<option value="${m}" ${tiempoMax===String(m)?"selected":""}>${m} min</option>`).join("")}</select></div>
           <div class="field"><label for="cerca-tipo">Tipo de centro</label>
             <select id="cerca-tipo"><option value="">Todos</option>${tipos.map(t=>`<option ${tipo===t?"selected":""}>${t}</option>`).join("")}</select></div>
           <div class="field"><label for="cerca-jornada">Jornada</label>
             <select id="cerca-jornada"><option value="">Cualquiera</option><option value="continua" ${jornadaFiltro==="continua"?"selected":""}>Continua</option><option value="partida" ${jornadaFiltro==="partida"?"selected":""}>Partida</option></select></div>
         </div>
-        <button class="btn btn-primary" type="submit">Calcular distancias</button>
+        <div class="search-row" style="grid-template-columns:1fr 1fr auto">
+          <div class="field"><label for="cerca-tamano">Tamaño del centro</label>
+            <select id="cerca-tamano"><option value="">Da igual</option><option value="pequeno" ${tamanoFiltro==="pequeno"?"selected":""}>Pequeño (&lt;10 unidades)</option><option value="grande" ${tamanoFiltro==="grande"?"selected":""}>Grande (≥10 unidades)</option></select></div>
+          <div class="field" style="justify-content:flex-end"><label style="visibility:hidden">.</label><label class="check-pill" style="display:inline-flex;width:fit-content"><input type="checkbox" id="cerca-comedor" ${comedorFiltro?"checked":""}> 🍽️ Solo con comedor</label></div>
+          <div class="field" style="justify-content:flex-end"><label style="visibility:hidden">.</label><button class="btn btn-primary" type="submit">Buscar</button></div>
+        </div>
       </form>
       <div id="cerca-results" style="margin-top:24px"></div>
     </section>`;
@@ -2260,30 +2323,29 @@ function renderCerca(params){
     localidadSelect.innerHTML = localidadOptionsHTML(prov, "");
   });
 
-  function cercaRow(s, km, pos){
-    const computed = computeScores(s);
-    const avg = computed ? avgScore(computed) : null;
+  const MEDALS = ["🥇","🥈","🥉"];
+
+  function cercaRow(s, minutes, isReal, computed, pos){
+    const avg = computed ? computed.avg : null;
+    const ird = computed ? computed.ird : null;
     const jornada = jornadaLabel(s);
     const fav = isFavorite(s.id);
     return `
       <a href="#/colegio/${s.id}" class="cerca-row">
-        <span class="cerca-pos">${pos}</span>
+        <span class="cerca-pos">${MEDALS[pos-1] || pos}</span>
         <div class="cerca-main">
           <div class="cerca-name">${s.nombre} <span class="type-tag" style="position:static;display:inline-block;vertical-align:middle">${s.tipo}</span></div>
           <div class="cerca-place">${s.localidad}, ${s.provincia}</div>
         </div>
-        <div class="cerca-km">📍 ${km} km</div>
-        <span class="rating-pill ${avg?"":"rating-pill-empty"}">${avg!=null?avg.toFixed(1):"—"}</span>
+        <div class="cerca-km">🕒 ${minutesLabel(minutes)}${minutes!=null ? (isReal ? ` <span class="muted" style="font-weight:400" title="Ruta real por carretera">✓ real</span>` : ` <span class="muted" style="font-weight:400">aprox.</span>`) : ""}</div>
+        ${ird!=null ? `<span class="rating-pill" style="background:var(--teal)">👍 ${ird}%</span>` : `<span class="rating-pill rating-pill-empty">Sin datos</span>`}
+        <span class="rating-pill ${avg?"":"rating-pill-empty"}">${avg!=null?avg.toFixed(1)+" ★":"—"}</span>
         <span class="cerca-jornada ${jornada?"":"is-muted"}">${jornada?"🕒 "+jornada:"Xornada sin dato"}</span>
         <button class="fav-btn" data-fav="${s.id}" aria-label="Guardar en favoritos" title="Guardar en favoritos" style="position:static">${fav?"★":"☆"}</button>
       </a>`;
   }
 
-  function paint(){
-    if(!town){
-      resultsArea.innerHTML = emptyState("Indica tu localidad", "Elige de dónde sales y calculamos la distancia por carretera a todos los centros.");
-      return;
-    }
+  function baseCandidates(){
     let list = SCHOOLS.filter(s => s.lat!=null && s.lng!=null);
     if(tipo) list = list.filter(s => s.tipo===tipo);
     if(jornadaFiltro){
@@ -2292,13 +2354,46 @@ function renderCerca(params){
         return jornadaFiltro==="continua" ? j.includes("continua") : j.includes("partida");
       });
     }
-    const withKm = list.map(s => ({ s, km: Math.round(roadKm(haversineKm(town.lat, town.lng, s.lat, s.lng))) })).sort((a,b)=>a.km-b.km);
-    const MAX_SHOWN = 80;
-    const shown = withKm.slice(0, MAX_SHOWN);
+    if(tamanoFiltro) list = list.filter(s => centerSizeCategory(s)===tamanoFiltro);
+    if(comedorFiltro) list = list.filter(s => getDatosObjetivos(s).instalaciones.comedor);
+    return list.map(s => {
+      const km = roadKm(haversineKm(town.lat, town.lng, s.lat, s.lng));
+      return { s, km, minutes: estimateMinutes(km), isReal:false, computed: computeScores(s) };
+    });
+  }
+
+  const MAX_SHOWN = 80;
+  const REAL_ROUTE_POOL = 100;
+
+  function renderList(withData, note){
     resultsArea.innerHTML = `
-      <div class="section-head"><div><span class="eyebrow">Resultados desde ${town.name}</span><h2>${withKm.length} centro${withKm.length===1?"":"s"} ordenado${withKm.length===1?"":"s"} por cercanía</h2></div></div>
-      ${withKm.length>MAX_SHOWN ? `<p class="muted" style="margin-bottom:14px">Mostrando los ${MAX_SHOWN} más cercanos — afina con los filtros de tipo o xornada.</p>` : ""}
-      <div class="cerca-list">${shown.length ? shown.map(({s,km},i)=>cercaRow(s,km,i+1)).join("") : emptyState("Sin resultados","Prueba a quitar el filtro de tipo o de xornada.")}</div>`;
+      <div class="section-head"><div><span class="eyebrow">Resultados desde ${town.name}</span><h2>${withData.length} centro${withData.length===1?"":"s"} — orden recomendado</h2></div></div>
+      <p class="muted" style="margin:-8px 0 14px">Combinamos cercanía, % que volvería a trabajar allí, valoración media y cuántas opiniones la respaldan.${note?" "+note:""}</p>
+      ${withData.length>MAX_SHOWN ? `<p class="muted" style="margin-bottom:14px">Mostrando los ${MAX_SHOWN} mejor puntuados — afina los filtros para ver el resto.</p>` : ""}
+      <div class="cerca-list">${withData.length ? withData.slice(0,MAX_SHOWN).map(({s,minutes,isReal,computed},i)=>cercaRow(s,minutes,isReal,computed,i+1)).join("") : emptyState("Sin resultados","Prueba a quitar algún filtro.")}</div>`;
+  }
+
+  async function paint(){
+    if(!town){
+      resultsArea.innerHTML = emptyState("Indica tu localidad", "Elige de dónde sales para calcular el tiempo por carretera a cada centro y ordenarlos por lo que más importa.");
+      return;
+    }
+    let all = baseCandidates();
+    let estimated = all;
+    if(tiempoMax) estimated = estimated.filter(x => x.minutes==null || x.minutes <= Number(tiempoMax)*1.6);
+    estimated.forEach(x => { x.score = smartScore(x.computed, x.minutes); });
+    estimated.sort((a,b) => b.score - a.score);
+    renderList(estimated, `<span id="cerca-loading">📍 Calculando tiempos reales por carretera…</span>`);
+
+    const pool = [...all].sort((a,b) => a.km - b.km).slice(0, REAL_ROUTE_POOL);
+    const realMinutes = await fetchRoadMinutesBatch({lat:town.lat, lng:town.lng}, pool.map(x => ({lat:x.s.lat, lng:x.s.lng})));
+    const poolIds = new Set(pool.map(x => x.s.id));
+    pool.forEach((x,i) => { if(realMinutes[i]!=null){ x.minutes = realMinutes[i]; x.isReal = true; } });
+    let finalList = all.filter(x => poolIds.has(x.s.id) || !tiempoMax);
+    if(tiempoMax) finalList = finalList.filter(x => x.minutes!=null && x.minutes <= Number(tiempoMax));
+    finalList.forEach(x => { x.score = smartScore(x.computed, x.minutes); });
+    finalList.sort((a,b) => b.score - a.score);
+    renderList(finalList, "");
   }
 
   paint();
@@ -2310,8 +2405,11 @@ function renderCerca(params){
     const loc = document.getElementById("cerca-localidad").value;
     if(prov) p.set("provincia", prov);
     if(loc) p.set("localidad", loc);
+    if(document.getElementById("cerca-tiempo").value) p.set("tiempo", document.getElementById("cerca-tiempo").value);
     if(document.getElementById("cerca-tipo").value) p.set("tipo", document.getElementById("cerca-tipo").value);
     if(document.getElementById("cerca-jornada").value) p.set("jornada", document.getElementById("cerca-jornada").value);
+    if(document.getElementById("cerca-tamano").value) p.set("tamano", document.getElementById("cerca-tamano").value);
+    if(document.getElementById("cerca-comedor").checked) p.set("comedor", "1");
     location.hash = "/cerca?" + p.toString();
   });
 
@@ -2323,6 +2421,142 @@ function renderCerca(params){
     const nowFav = toggleFavorite(id);
     btn.textContent = nowFav ? "★" : "☆";
     toast(nowFav ? "Añadido a favoritos" : "Eliminado de favoritos");
+  });
+}
+
+/* ---------- ¿Merece la pena cambiar? ---------- */
+function improvementLevel(qualityDelta){
+  if(qualityDelta>=0.25) return { label:"Mejora muy alta", tone:"good" };
+  if(qualityDelta>=0.12) return { label:"Mejora alta", tone:"mid" };
+  if(qualityDelta>0) return { label:"Cambio poco significativo", tone:"neutral" };
+  return null;
+}
+function qualityOf(computed){
+  if(!computed) return null;
+  const irdPart = computed.ird!=null ? computed.ird/100 : 0.45;
+  return irdPart*0.6 + (computed.avg/5)*0.4;
+}
+function renderMerecePena(params){
+  const currentId = params.get("actual") || "";
+  const tiempoMax = params.get("tiempo") || "20";
+  const current = currentId ? SCHOOLS.find(s=>s.id===currentId) : null;
+
+  root.innerHTML = `
+    <section class="section container" style="max-width:760px">
+      <span class="eyebrow">Decide con datos</span>
+      <h1>¿Merece la pena cambiar?</h1>
+      <p class="lead">Indica dónde trabajas ahora y te mostramos qué centros cercanos representan de verdad una mejora.</p>
+      <form class="search-panel" id="merece-form">
+        <div class="field"><label for="merece-q">Tu centro actual</label>
+          <input type="text" id="merece-q" placeholder="Escribe el nombre de tu centro..." value="${current?current.nombre:""}" autocomplete="off">
+          <input type="hidden" id="merece-actual" value="${currentId}">
+        </div>
+        <div id="merece-suggestions" class="minicadp-row-list" style="max-height:220px;overflow:auto"></div>
+        <div class="search-row" style="grid-template-columns:1fr auto">
+          <div class="field"><label for="merece-tiempo">Radio de búsqueda</label>
+            <select id="merece-tiempo">${[10,15,20,30,45].map(m=>`<option value="${m}" ${tiempoMax===String(m)?"selected":""}>${m} min en coche</option>`).join("")}</select></div>
+          <div class="field" style="justify-content:flex-end"><label style="visibility:hidden">.</label><button class="btn btn-primary" type="submit">Comparar</button></div>
+        </div>
+      </form>
+      <div id="merece-results" style="margin-top:24px"></div>
+    </section>`;
+
+  const qInput = document.getElementById("merece-q");
+  const actualInput = document.getElementById("merece-actual");
+  const suggestions = document.getElementById("merece-suggestions");
+  const resultsArea = document.getElementById("merece-results");
+
+  function paintSuggestions(){
+    const q = qInput.value.toLowerCase().trim();
+    if(!q || actualInput.value){ suggestions.innerHTML = ""; return; }
+    const matches = SCHOOLS.filter(s => s.nombre.toLowerCase().includes(q) || s.localidad.toLowerCase().includes(q)).slice(0,8);
+    suggestions.innerHTML = matches.map(s=>`
+      <div class="minicadp-row" data-pick="${s.id}" style="cursor:pointer">
+        <span class="minicadp-row-pos">🏫</span>
+        <div class="minicadp-row-info"><div class="minicadp-row-name">${s.nombre} <span class="minicadp-row-tag">${s.tipo}</span></div><div class="minicadp-row-meta">${s.localidad}, ${s.provincia}</div></div>
+      </div>`).join("");
+  }
+  qInput.addEventListener("input", () => { actualInput.value = ""; paintSuggestions(); });
+  suggestions.addEventListener("click", ev => {
+    const row = ev.target.closest("[data-pick]");
+    if(!row) return;
+    const id = row.getAttribute("data-pick");
+    const school = SCHOOLS.find(s=>s.id===id);
+    actualInput.value = id; qInput.value = school.nombre; suggestions.innerHTML = "";
+  });
+
+  function merecePenaRow(s, minutes, isReal, computed, delta){
+    const level = improvementLevel(delta);
+    return `
+      <a href="#/colegio/${s.id}" class="minicadp-row" style="align-items:center">
+        <span class="minicadp-row-pos">🕒 ${minutesLabel(minutes)}${isReal?"":"*"}</span>
+        <div class="minicadp-row-info">
+          <div class="minicadp-row-name">${s.nombre} <span class="minicadp-row-tag">${s.tipo}</span></div>
+          <div class="minicadp-row-meta">${computed.ird!=null?`👍 ${computed.ird}% volvería`:"Sin dato de recomendación"} · ${starsHTML(computed.avg)} ${computed.avg.toFixed(1)}/5</div>
+        </div>
+        <span class="rec-banner tone-${level.tone}" style="font-size:.72rem;padding:4px 10px">${level.label}</span>
+      </a>`;
+  }
+
+  async function paintResults(){
+    if(!current || current.lat==null){
+      resultsArea.innerHTML = current
+        ? emptyState("Sin coordenadas", "Este centro no tiene ubicación registrada.")
+        : emptyState("Busca tu centro actual", "Escribe su nombre arriba y selecciónalo de la lista para ver alternativas cercanas.");
+      return;
+    }
+    const currentComputed = computeScores(current);
+    const currentQuality = qualityOf(currentComputed);
+    const minutes = Number(tiempoMax);
+    const currentAvg = currentComputed ? currentComputed.avg : null;
+    const currentIrd = currentComputed ? currentComputed.ird : null;
+
+    function currentCardHTML(note){
+      return `
+      <div class="merece-current-card">
+        <div class="merece-current-label">Actualmente trabajas aquí</div>
+        <div class="merece-current-name">${current.nombre}</div>
+        <div class="merece-current-stats">
+          ${starsHTML(currentAvg)} <span class="muted">${currentAvg!=null?currentAvg.toFixed(1)+"/5":"sin valorar"}</span>
+          ${currentIrd!=null ? `<span class="rating-pill" style="background:var(--teal)">👍 ${currentIrd}% volvería</span>` : `<span class="muted">Sin opiniones suficientes todavía</span>`}
+        </div>
+      </div>
+      <h3 class="group-title">A menos de ${minutes} min tienes</h3>
+      ${note ? `<p class="muted" style="margin-bottom:10px">${note}</p>` : ""}
+      ${!currentComputed ? `<p class="muted" style="margin-bottom:14px">Tu centro actual todavía no tiene opiniones — no podemos calcular si otro centro es objetivamente mejor.</p>` : ""}`;
+    }
+
+    let all = SCHOOLS
+      .filter(s => s.id!==current.id && s.lat!=null && s.lng!=null)
+      .map(s => { const km = roadKm(haversineKm(current.lat, current.lng, s.lat, s.lng)); return { s, km, minutes: estimateMinutes(km), isReal:false, computed: computeScores(s) }; })
+      .filter(x => x.computed);
+
+    function paintWith(list, note){
+      const withDelta = list
+        .filter(x => x.minutes!=null && x.minutes<=minutes)
+        .map(x => ({ ...x, delta: currentQuality!=null ? qualityOf(x.computed)-currentQuality : null }))
+        .filter(x => x.delta!=null && improvementLevel(x.delta))
+        .sort((a,b) => b.delta-a.delta);
+      resultsArea.innerHTML = currentCardHTML(note) + `
+      <div class="minicadp-row-list">${withDelta.length ? withDelta.map(({s,minutes:m,isReal,computed,delta})=>merecePenaRow(s,m,isReal,computed,delta)).join("") : emptyState("No hay mejoras claras cerca", "Dentro de ese radio no encontramos centros con datos que superen claramente al tuyo. Prueba a ampliar el radio.")}</div>${withDelta.length ? `<p class="muted" style="margin-top:10px;font-size:.78rem">${withDelta.some(x=>!x.isReal) ? "* tiempo estimado en línea recta, no se pudo calcular la ruta real" : ""}</p>` : ""}`;
+    }
+
+    paintWith(all, "📍 Calculando tiempos reales por carretera…");
+
+    const pool = all.filter(x => x.minutes==null || x.minutes<=minutes*1.8);
+    const realMinutes = await fetchRoadMinutesBatch({lat:current.lat, lng:current.lng}, pool.map(x => ({lat:x.s.lat, lng:x.s.lng})));
+    pool.forEach((x,i) => { if(realMinutes[i]!=null){ x.minutes = realMinutes[i]; x.isReal = true; } });
+    paintWith(all, "");
+  }
+
+  paintResults();
+
+  document.getElementById("merece-form").addEventListener("submit", ev=>{
+    ev.preventDefault();
+    const p = new URLSearchParams();
+    if(actualInput.value) p.set("actual", actualInput.value);
+    p.set("tiempo", document.getElementById("merece-tiempo").value);
+    location.hash = "/merece-la-pena?" + p.toString();
   });
 }
 
@@ -2643,7 +2877,7 @@ function renderMap(){
         radius: avg!=null ? 8 : 5, color:"#fff", weight:2,
         fillColor: avg!=null ? scoreColor(avg) : "#9A9587", fillOpacity:0.95
       });
-      const notaHtml = avg!=null ? `Nota: ${avg.toFixed(1)}/10` : "Sin valorar todavía";
+      const notaHtml = avg!=null ? `Nota: ${avg.toFixed(1)}/5` : "Sin valorar todavía";
       marker.bindPopup(`<strong>${s.nombre}</strong><br>${s.tipo} · ${s.localidad}, ${s.provincia}<br>${notaHtml}<br><a href="#/colegio/${s.id}">Ver ficha →</a>`);
       const group = layersByType[s.tipo];
       if(group) marker.addTo(group); else marker.addTo(map);
@@ -2823,19 +3057,26 @@ function renderSchool(id, params){
   const avgNum = computedInitial ? avgScore(computedInitial) : null;
   const avg = avgNum!=null ? avgNum.toFixed(1) : "—";
   const rec = recommendationLevel(avgNum);
-  const reviewsList = allReviews(s);
+  // Solo opiniones reales (propias + sincronizadas) — nunca el contenido de
+  // ejemplo de los centros curados, para que "basado en N experiencias" sea cierto.
+  const reviewsList = getCommunityReviews(s.id);
   const n = reviewsList.length;
   const activeTab = params.get("tab") || "valoraciones";
   const fav = isFavorite(s.id);
   const comparing = isComparing(s.id);
   const datos = getDatosObjetivos(s);
-  const pctRecomienda = n ? Math.round(reviewsList.filter(r=>r.nota>=6).length/n*100) : null;
+  const ird = computedInitial ? computedInitial.ird : null;
   const ultimaValoracion = n ? [...reviewsList].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""))[0].fecha : null;
 
   root.innerHTML = `
     <section class="school-hero"><div class="container">
       <div class="hero-top-row">
-        <div class="selo"><span class="num" id="rating-num">${avg}</span><span class="label">/ 10</span></div>
+        <div class="ird-selo">
+          ${ird!=null
+            ? `<span class="ird-pct">${ird}%</span><span class="ird-caption">volverían a<br>trabajar aquí</span>`
+            : `<span class="ird-pct ird-pct-empty">—</span><span class="ird-caption">todavía sin<br>suficientes datos</span>`}
+        </div>
+        <div class="selo star-selo"><span class="num" id="rating-num">${avg}</span><span class="den">/ 5 ★</span><span class="label">${n} experiencia${n===1?"":"s"}</span></div>
         <div class="meta">
           <div class="tags"><span>${s.tipo}</span><span>${s.etapas.join(" · ")}</span><span>${s.provincia}</span>${!s.curated?`<span>📋 Directorio oficial</span>`:""}</div>
           <h1>${s.nombre}</h1>
@@ -2881,8 +3122,8 @@ function renderSchool(id, params){
         <div class="hero-split-col is-experiencia">
           <div class="hero-split-title">💬 Experiencia de los docentes</div>
           <div class="hero-split-stats">
-            <span>⭐ Nota media ${avg}</span>
-            ${pctRecomienda!=null ? `<span>👍 ${pctRecomienda}% recomienda</span>` : `<span class="muted">Sin recomendación todavía</span>`}
+            <span>⭐ Nota media ${avg}/5</span>
+            ${ird!=null ? `<span>👍 ${ird}% volvería</span>` : `<span class="muted">Sin datos todavía</span>`}
             <span>💬 ${n} opinión${n===1?"":"es"}</span>
             ${ultimaValoracion ? `<span>🕓 Última: ${ultimaValoracion}</span>` : ""}
           </div>
@@ -3037,13 +3278,38 @@ function applyDatosEdit(base, ov){
 function tabContent(s, tab){
   if(tab==="valoraciones"){
     const computed = computeScores(s);
-    if(!computed) return `<h2>Puntuaciones</h2>${contributePrompt("Este centro todavía no tiene valoraciones. Ve a «Opiniones» y sé el primero en puntuarlo.")}`;
-    return `<h2>Puntuaciones</h2><p class="muted" style="margin-top:-8px;margin-bottom:14px">Media entre la base del centro y las opiniones de la comunidad.</p>
-      ${CATEGORY_GROUPS.map(group => `
-        <h3 class="group-title">${group.label}</h3>
-        <div class="score-grid">${group.cats.filter(k=>computed[k]!=null).map(k=>`
-          <div class="score-item"><span class="name">${SCORE_LABELS[k]}</span><span class="score-bar"><i style="width:${computed[k]*10}%"></i></span><span class="val">${computed[k].toFixed(1)}</span></div>`).join("")}</div>
-      `).join("")}`;
+    if(!computed) return `<h2>Puntuaciones</h2>${contributePrompt("Este centro todavía no tiene valoraciones. Ve a «Opiniones» y sé el primero en puntuarlo — se tarda menos de un minuto.")}`;
+    const n = computed.n;
+    return `
+      <h2>Puntuaciones</h2>
+      <div class="rating-summary">
+        <div class="rating-summary-main">
+          <div class="rating-summary-stars">${starsHTML(computed.avg)}</div>
+          <div class="rating-summary-num">${computed.avg.toFixed(1)} <span class="muted">sobre 5</span></div>
+          <div class="muted">Basado en ${n} experiencia${n===1?"":"s"}</div>
+        </div>
+        <div class="rating-distribution">
+          ${[5,4,3,2,1].map(star => {
+            const count = computed.distribution[star-1];
+            const pct = n ? Math.round(count/n*100) : 0;
+            return `<div class="dist-row"><span class="dist-star">${star}★</span><span class="dist-bar"><i style="width:${pct}%"></i></span><span class="dist-count">${count}</span></div>`;
+          }).join("")}
+        </div>
+      </div>
+      <div class="confidence-box">
+        <div class="confidence-label">Nivel de confianza de esta valoración</div>
+        <div class="confidence-bar"><i style="width:${computed.confidence.pct}%"></i></div>
+        <div class="muted" style="margin-top:4px">${computed.confidence.label} — basado en ${n} experiencia${n===1?"":"s"}. Cuantas más opiniones, más se acerca la nota a lo que dice la comunidad.</div>
+      </div>
+      <h3 class="group-title">Valoración por categorías</h3>
+      <div class="category-stars-grid">
+        ${CATEGORIES.map(({key,label,icon}) => computed.categories[key]!=null ? `
+          <div class="category-star-item">
+            <span class="cat-icon">${icon}</span>
+            <div class="cat-info"><div class="cat-label">${label}</div>${starsHTML(computed.categories[key])}</div>
+            <span class="cat-val">${computed.categories[key].toFixed(1)}</span>
+          </div>` : "").join("")}
+      </div>`;
   }
   if(tab==="datos"){
     const base = getDatosObjetivos(s);
@@ -3160,24 +3426,30 @@ function tabContent(s, tab){
       items => `<ul class="note-list">${items.map(n=>`<li>${n}</li>`).join("")}</ul>`);
   }
   if(tab==="ambiente"){
-    const reviews = allReviews(s);
+    // Solo opiniones reales — nunca contenido de ejemplo de los centros curados.
+    const reviews = getCommunityReviews(s.id);
     return `<h2>Opiniones</h2>
       ${reviews.map(r=>`<div class="review-card"><div class="head"><span class="author">${r.autor}</span><span class="date">${r.fecha}</span>${isAdmin() && r.revId ? `<button class="btn btn-ghost admin-delete-review" data-rev-id="${r.revId}" style="font-size:.72rem;padding:4px 9px">🗑️ Eliminar</button>` : ""}</div>
-        <div class="stars">${"★".repeat(Math.round(r.nota/2))}${"☆".repeat(5-Math.round(r.nota/2))} <span style="font-family:var(--font-mono);color:var(--ink-soft)">${r.nota.toFixed(1)}/10</span></div>
-        <p>${r.texto}</p></div>`).join("")}
+        <div class="review-card-top">${starsHTML(r.nota)} <span class="review-nota-num">${r.nota.toFixed(1)}/5</span>${typeof r.volveria==="boolean" ? `<span class="volveria-badge ${r.volveria?"is-yes":"is-no"}">${r.volveria?"👍 Volvería a trabajar aquí":"👎 No volvería"}</span>` : ""}</div>
+        ${r.texto ? `<p>${r.texto}</p>` : ""}</div>`).join("")}
       <form class="review-form" id="review-form">
         <h3 style="margin:0">Añadir tu opinión</h3>
-        <p class="muted" style="margin:-4px 0 4px">Puntúa cada bloque — se combina con la puntuación actual del centro.</p>
-        ${CATEGORY_GROUPS.map((group,i)=>`
-          <details class="rating-group" ${i===0?"open":""}>
-            <summary>${group.label}</summary>
-            <div class="rating-inputs">${group.cats.map(k=>`
-              <div class="rating-input">
-                <label for="rt-${k}">${SCORE_LABELS[k]} <output for="rt-${k}" id="rt-${k}-val">7</output></label>
-                <input type="range" id="rt-${k}" data-cat="${k}" min="1" max="10" step="1" value="7">
-              </div>`).join("")}</div>
-          </details>`).join("")}
-        <textarea id="review-text" placeholder="Cuenta tu experiencia..." required></textarea>
+        <p class="muted" style="margin:-4px 0 4px">Puntúa cada bloque con estrellas — menos de un minuto.</p>
+        ${CATEGORIES.map(({key,label,icon})=>`
+          <div class="star-picker" data-cat="${key}">
+            <span class="star-picker-label">${icon} ${label}</span>
+            <div class="star-picker-stars">
+              ${[1,2,3,4,5].map(nv=>`<button type="button" class="star-btn" data-value="${nv}" aria-label="${nv} estrella${nv===1?"":"s"}">★</button>`).join("")}
+            </div>
+          </div>`).join("")}
+        <div class="volveria-picker">
+          <div class="volveria-question">¿Volverías a trabajar en este centro?</div>
+          <div class="volveria-options">
+            <button type="button" class="volveria-btn" data-volveria="true">👍 Sí</button>
+            <button type="button" class="volveria-btn" data-volveria="false">👎 No</button>
+          </div>
+        </div>
+        <textarea id="review-text" placeholder="Cuenta tu experiencia (opcional)..."></textarea>
         <button class="btn btn-primary" type="submit" style="justify-self:start">Publicar opinión</button>
       </form>`;
   }
@@ -3187,22 +3459,48 @@ function tabContent(s, tab){
 function bindReviewForm(s){
   const form = document.getElementById("review-form");
   if(!form) return;
-  form.querySelectorAll("input[type=range]").forEach(input=>{
-    const out = document.getElementById(`${input.id}-val`);
-    input.addEventListener("input", ()=>{ if(out) out.textContent = input.value; });
+
+  form.querySelectorAll(".star-picker").forEach(picker=>{
+    const btns = [...picker.querySelectorAll(".star-btn")];
+    picker.dataset.value = "0";
+    btns.forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const value = Number(btn.dataset.value);
+        picker.dataset.value = String(value);
+        btns.forEach(b=>b.classList.toggle("is-filled", Number(b.dataset.value)<=value));
+      });
+    });
   });
+
+  const volveriaBtns = [...form.querySelectorAll(".volveria-btn")];
+  form.dataset.volveria = "";
+  volveriaBtns.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      form.dataset.volveria = btn.dataset.volveria;
+      volveriaBtns.forEach(b=>b.classList.toggle("is-active", b===btn));
+    });
+  });
+
   form.addEventListener("submit", ev=>{
     ev.preventDefault();
-    const texto = document.getElementById("review-text").value.trim();
-    if(!texto) return;
     const scores = {};
-    form.querySelectorAll("input[type=range]").forEach(input=>{ scores[input.dataset.cat] = Number(input.value); });
-    const nota = avgScore(scores);
-    const saved = addUserReview(s.id, {autor:"Tú", nota, fecha:new Date().toISOString().slice(0,10), texto, scores});
+    let allRated = true;
+    form.querySelectorAll(".star-picker").forEach(picker=>{
+      const value = Number(picker.dataset.value || 0);
+      if(!value) allRated = false;
+      scores[picker.dataset.cat] = value;
+    });
+    if(!allRated){ toast("Puntúa las 6 categorías con estrellas antes de publicar"); return; }
+    if(form.dataset.volveria===""){ toast("Indica si volverías a trabajar en este centro"); return; }
+
+    const texto = document.getElementById("review-text").value.trim();
+    const nota = averageOf(scores);
+    const volveria = form.dataset.volveria === "true";
+    const saved = addUserReview(s.id, {autor:"Tú", nota, fecha:new Date().toISOString().slice(0,10), texto, scores, volveria});
     if(isCloudConfigured()){
       pushCloudReview(s.id, saved).then(ok => { if(ok) toast("Opinión compartida con la comunidad"); });
     }
-    toast("Opinión publicada, la puntuación media ya se ha actualizado");
+    toast("Opinión publicada, ¡gracias por contribuir!");
     renderTabPanel(s, "ambiente");
     const ratingNum = document.getElementById("rating-num");
     if(ratingNum) ratingNum.textContent = avgScore(computeScores(s)).toFixed(1);

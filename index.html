@@ -122,6 +122,24 @@ h1,h2,h3 { font-family:var(--font-display); font-weight:700; margin:0 0 .4em; }
 .merece-current-label { font-size:.74rem; text-transform:uppercase; letter-spacing:.06em; opacity:.8; }
 .merece-current-name { font-size:1.2rem; font-weight:700; margin:4px 0 10px; }
 .merece-current-stats { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+
+.housing-card { background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-l); padding:26px 28px; box-shadow:var(--shadow-md); }
+.housing-card-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; }
+.housing-card-head h2 { margin:0; font-size:1.3rem; }
+.housing-stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin-bottom:20px; }
+.housing-stat { display:flex; align-items:center; gap:10px; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-m); padding:12px 14px; }
+.housing-stat .icon { font-size:1.4rem; flex-shrink:0; }
+.housing-stat .val { font-weight:800; font-family:var(--font-mono); font-size:1.05rem; line-height:1.2; }
+.housing-stat .lbl { font-size:.72rem; color:var(--ink-soft); }
+.housing-cta { width:100%; text-align:center; justify-content:center; padding:14px; font-size:1rem; }
+.housing-tip-list { display:flex; flex-direction:column; gap:12px; }
+.housing-tip-card { background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px 18px; }
+.housing-tip-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+.housing-tip-zona { font-weight:700; }
+.housing-tip-meta { font-size:.82rem; color:var(--ink-soft); margin-top:2px; }
+.housing-tip-card p { margin:10px 0; }
+.housing-tip-contacto { font-size:.84rem; background:var(--paper); border-radius:var(--radius-s); padding:6px 10px; display:inline-block; margin-bottom:8px; }
+.housing-tip-footer { display:flex; justify-content:space-between; font-size:.76rem; color:var(--ink-soft); margin-top:6px; }
 .merece-warning { background:var(--ochre-tint); border:1px solid var(--ochre); border-radius:var(--radius-m); padding:14px 16px; margin-bottom:18px; font-size:.88rem; line-height:1.5; }
 .merece-warning a { color:var(--teal); font-weight:600; }
 @media (max-width:900px) {
@@ -373,7 +391,6 @@ details.rating-group .rating-inputs { padding:2px 12px 12px; }
       <a href="#/buscar">Buscar</a>
       <a href="#/mapa">Mapa</a>
       <a href="#/cerca">Ordena por distancia</a>
-      <a href="#/merece-la-pena">Mejora tu destino (en proceso)</a>
       <a href="#/minicadp">Mini CADP</a>
       <a href="#/favoritos">Favoritos</a>
     </nav>
@@ -459,6 +476,27 @@ async function pushCloudReview(schoolId, review){
     await setDoc(doc(db,"reviews",review.revId), { ...review, schoolId });
     return true;
   }catch(e){ console.warn("No se pudo compartir la opinión (guardada localmente igualmente):", e.message); return false; }
+}
+async function fetchHousingTipsRemote(schoolId){
+  if(!isCloudConfigured()) return [];
+  try{
+    const { db, firestore } = await loadFirestore();
+    const { collection, query, where, getDocs, limit } = firestore;
+    const q = query(collection(db,"housingTips"), where("schoolId","==",schoolId), limit(100));
+    const snap = await getDocs(q);
+    const docs = snap.docs.map(d=>d.data());
+    docs.sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+    return docs;
+  }catch(e){ console.warn("No se pudieron cargar los alojamientos de la comunidad (modo local):", e.message); return []; }
+}
+async function pushHousingTip(schoolId, tip){
+  if(!isCloudConfigured()) return false;
+  try{
+    const { db, firestore } = await loadFirestore();
+    const { doc, setDoc } = firestore;
+    await setDoc(doc(db,"housingTips",tip.tipId), { ...tip, schoolId });
+    return true;
+  }catch(e){ console.warn("No se pudo sincronizar el alojamiento (guardado localmente igualmente):", e.message); return false; }
 }
 
 async function fetchCloudFieldEdit(schoolId, field){
@@ -1676,6 +1714,20 @@ function getCommunityReviews(id){
   const cloud = getCloudReviews(id).filter(r=>!ownIds.has(r.revId));
   return [...own, ...cloud];
 }
+const getUserHousingTips = (id) => readJSON("edubk_lite_housing_tips", {})[id] || [];
+function addUserHousingTip(id, tip){
+  const withId = { ...tip, tipId: tip.tipId || makeRevId() };
+  const all=readJSON("edubk_lite_housing_tips", {}); if(!all[id])all[id]=[]; all[id].unshift(withId); writeJSON("edubk_lite_housing_tips", all);
+  return withId;
+}
+const getCloudHousingTips = (id) => readJSON("edubk_lite_cloud_housing_tips", {})[id] || [];
+function setCloudHousingTips(id, tips){ const all=readJSON("edubk_lite_cloud_housing_tips", {}); all[id]=tips; writeJSON("edubk_lite_cloud_housing_tips", all); }
+function getCommunityHousingTips(id){
+  const own = getUserHousingTips(id);
+  const ownIds = new Set(own.map(t=>t.tipId).filter(Boolean));
+  const cloud = getCloudHousingTips(id).filter(t=>!ownIds.has(t.tipId));
+  return [...own, ...cloud];
+}
 const getTheme = () => readJSON("edubk_lite_theme", "light");
 const setTheme = (t) => writeJSON("edubk_lite_theme", t);
 
@@ -1898,6 +1950,7 @@ function navigate(){
   else if(path==="/favoritos") renderFavorites();
   else if(path==="/mapa") renderMap();
   else if(path==="/cerca") renderCerca(params);
+  else if(path.startsWith("/vivienda/")) renderHousingPage(path.split("/")[2], params);
   else if(path==="/merece-la-pena") renderMerecePena(params);
   else if(path==="/minicadp") renderMiniCadp();
   else if(path==="/comparar") renderCompare();
@@ -2229,6 +2282,34 @@ function scoreColor(avg){
 }
 let mapRenderToken = 0;
 const MAP_TYPES = ["CEIP","CPI","IES","CRA","CEE","EEI","EOI","CIFP","CMUS"];
+
+/* ---------- housing — "Vivir cerca de este colegio": precio medio de alquiler
+   real por zona + espacio colaborativo donde los docentes recomiendan alojamientos
+   que ya han usado. Para las 7 grandes ciudades gallegas se usa el precio medio
+   REAL de mayo de 2026 (Instituto Galego de Vivenda e Solo — IGVS, datos oficiales
+   de fianzas de alquiler depositadas, vía El Correo Gallego 17/07/2026). Para el
+   resto de localidades se estima con el precio medio por m² de su provincia
+   (Observatorio da Vivenda, 2026) × 65 m² (tamaño típico), declarado como
+   estimación, nunca como dato exacto de esa localidad. ---------- */
+const HOUSING_CITY_RENT_EUR = {
+  "A Coruña": 710.7, "Vigo": 727.5, "Santiago de Compostela": 672, "Pontevedra": 706.6,
+  "Ourense": 587.5, "Lugo": 564.5, "Ferrol": 585.7
+};
+const HOUSING_PROVINCE_M2_RATE = { "A Coruña": 9.6, "Lugo": 8.0, "Ourense": 7.6, "Pontevedra": 11.3 };
+const HOUSING_TYPICAL_M2 = 65;
+function housingEstimatedAvgPrice(school){
+  const ayto = school.ayuntamiento || "";
+  if(HOUSING_CITY_RENT_EUR[ayto] != null){
+    return { precio: Math.round(HOUSING_CITY_RENT_EUR[ayto]), esDatoDeCiudad: true, fuente: "Instituto Galego de Vivenda e Solo (IGVS), datos oficiales de mayo de 2026" };
+  }
+  const rate = HOUSING_PROVINCE_M2_RATE[school.provincia];
+  if(rate != null){
+    return { precio: Math.round(rate*HOUSING_TYPICAL_M2/5)*5, esDatoDeCiudad: false, fuente: `Estimado a partir del precio medio por m² en la provincia de ${school.provincia} (Observatorio da Vivenda, 2026), para un piso de ${HOUSING_TYPICAL_M2} m²` };
+  }
+  return { precio: 550, esDatoDeCiudad: false, fuente: "Estimación genérica — sin dato de referencia para esta zona" };
+}
+const HOUSING_TIPO_ALOJAMIENTO = ["Piso completo", "Habitación en piso compartido", "Estudio", "Casa", "Pensión", "Hostal"];
+
 function jornadaLabel(s){
   const serv = CATALOGO_SERVIZOS[s.codigoOficial || s.id];
   if(!serv || !serv[3]) return null;
@@ -2458,6 +2539,111 @@ function qualityOf(computed){
   const irdPart = computed.ird!=null ? computed.ird/100 : 0.45;
   return irdPart*0.6 + (computed.avg/5)*0.4;
 }
+function housingTipCardHTML(t){
+  return `
+    <div class="housing-tip-card">
+      <div class="housing-tip-top">
+        <div>
+          <div class="housing-tip-zona">${t.zona}</div>
+          <div class="housing-tip-meta">${t.tipoAlojamiento}${t.precio ? ` · ${t.precio} €/mes` : ""}</div>
+        </div>
+        ${typeof t.recomienda==="boolean" ? `<span class="volveria-badge ${t.recomienda?"is-yes":"is-no"}">${t.recomienda?"👍 Lo recomienda":"👎 No lo recomienda"}</span>` : ""}
+      </div>
+      ${t.texto ? `<p>${t.texto}</p>` : ""}
+      ${t.contacto ? `<div class="housing-tip-contacto">📞 ${t.contacto}</div>` : ""}
+      <div class="housing-tip-footer"><span>${t.autor}</span><span>${t.fecha}</span></div>
+    </div>`;
+}
+
+function renderHousingPage(schoolId, params){
+  const s = SCHOOLS.find(x=>x.id===schoolId);
+  if(!s) return renderNotFound();
+
+  const avgPrice = housingEstimatedAvgPrice(s);
+  const tips = getCommunityHousingTips(s.id);
+  const tipsWithPrice = tips.filter(t=>t.precio);
+  const communityAvg = tipsWithPrice.length
+    ? Math.round(tipsWithPrice.reduce((a,t)=>a+t.precio,0)/tipsWithPrice.length)
+    : null;
+
+  root.innerHTML = `
+    <section class="section container" style="max-width:760px">
+      <span class="eyebrow">Vivir cerca de este colegio</span>
+      <h1>Alojamientos cerca de ${s.nombre}</h1>
+      <p class="lead">Un espacio para que los propios docentes recomienden alojamientos que ya han probado — nada de anuncios de portales inmobiliarios, solo experiencias reales de compañeros.</p>
+
+      <div class="housing-stats-grid" style="margin-bottom:26px">
+        <div class="housing-stat"><span class="icon">💶</span><div><div class="val">${avgPrice.precio} €/mes</div><div class="lbl">${avgPrice.esDatoDeCiudad?"Precio medio real de la zona":"Precio medio estimado de la zona"}</div></div></div>
+        ${communityAvg!=null ? `<div class="housing-stat"><span class="icon">🧑‍🏫</span><div><div class="val">${communityAvg} €/mes</div><div class="lbl">Según ${tipsWithPrice.length} docente${tipsWithPrice.length===1?"":"s"}</div></div></div>` : ""}
+        <div class="housing-stat"><span class="icon">🏘️</span><div><div class="val">${tips.length}</div><div class="lbl">Alojamiento${tips.length===1?"":"s"} recomendado${tips.length===1?"":"s"}</div></div></div>
+      </div>
+      <p class="muted" style="margin:-18px 0 26px;font-size:.76rem">📊 ${avgPrice.fuente}.</p>
+
+      <h2 style="margin-bottom:4px">Comparte un alojamiento</h2>
+      <p class="muted" style="margin:0 0 14px">¿Has vivido cerca de este centro? Cuéntaselo a quien pida destino aquí después que tú.</p>
+      <form class="search-panel" id="housing-tip-form">
+        ${nameFieldHTML()}
+        <div class="field"><label for="ht-zona">Zona o dirección aproximada</label><input type="text" id="ht-zona" placeholder="Ej: cerca de la Alameda, a 5 min andando" required></div>
+        <div class="search-row" style="grid-template-columns:1fr 1fr">
+          <div class="field"><label for="ht-tipo">Tipo de alojamiento</label>
+            <select id="ht-tipo">${HOUSING_TIPO_ALOJAMIENTO.map(t=>`<option>${t}</option>`).join("")}</select>
+          </div>
+          <div class="field"><label for="ht-precio">Precio aproximado (€/mes)</label><input type="number" id="ht-precio" min="0" placeholder="Opcional"></div>
+        </div>
+        <div class="volveria-picker">
+          <div class="volveria-question">¿Lo recomendarías?</div>
+          <div class="volveria-options">
+            <button type="button" class="volveria-btn" data-recomienda="true">👍 Sí</button>
+            <button type="button" class="volveria-btn" data-recomienda="false">👎 No</button>
+          </div>
+        </div>
+        <div class="field"><label for="ht-texto">Tu recomendación</label><textarea id="ht-texto" placeholder="Cuenta cómo era el sitio, el casero, el barrio..." rows="3"></textarea></div>
+        <div class="field"><label for="ht-contacto">Contacto o cómo encontrarlo (opcional)</label><input type="text" id="ht-contacto" placeholder="Ej: nombre de la agencia, o dejo mi email si sigue libre"></div>
+        <button class="btn btn-primary" type="submit" style="justify-self:start">Compartir</button>
+      </form>
+
+      <h2 style="margin-top:32px">Recomendaciones de la comunidad</h2>
+      <div class="housing-tip-list">
+        ${tips.length ? tips.map(housingTipCardHTML).join("") : emptyState("Todavía no hay recomendaciones", "Sé el primero en compartir un alojamiento cerca de este centro.")}
+      </div>
+    </section>`;
+
+  const form = document.getElementById("housing-tip-form");
+  let recomienda = "";
+  const recBtns = [...form.querySelectorAll(".volveria-btn")];
+  recBtns.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      recomienda = btn.dataset.recomienda;
+      recBtns.forEach(b=>b.classList.toggle("is-active", b===btn));
+    });
+  });
+
+  form.addEventListener("submit", ev=>{
+    ev.preventDefault();
+    const zona = document.getElementById("ht-zona").value.trim();
+    if(!zona){ toast("Indica la zona o dirección aproximada"); return; }
+    const fd = new FormData(form);
+    const editorName = fd.get("editorName") || "Anónimo";
+    const precio = Number(document.getElementById("ht-precio").value) || null;
+    const tip = {
+      autor: editorName,
+      fecha: new Date().toISOString().slice(0,10),
+      zona,
+      tipoAlojamiento: document.getElementById("ht-tipo").value,
+      precio,
+      recomienda: recomienda==="" ? null : recomienda==="true",
+      texto: document.getElementById("ht-texto").value.trim(),
+      contacto: document.getElementById("ht-contacto").value.trim()
+    };
+    const saved = addUserHousingTip(s.id, tip);
+    if(isCloudConfigured()){
+      pushHousingTip(s.id, saved).then(ok => { if(ok) toast("Alojamiento compartido con la comunidad"); });
+    }
+    toast("¡Gracias por compartirlo!");
+    renderHousingPage(s.id, params);
+  });
+}
+
 function renderMerecePena(params){
   const currentId = params.get("actual") || "";
   const tiempoMax = params.get("tiempo") || "20";
@@ -3096,6 +3282,12 @@ function renderSchool(id, params){
   const datosEdit = getBestFieldEdit(s.id, "datos");
   const datos = datosEdit ? applyDatosEdit(datosBase, datosEdit.value) : datosBase;
   const ird = computedInitial ? computedInitial.ird : null;
+  const housingAvgPrice = housingEstimatedAvgPrice(s);
+  const housingTips = getCommunityHousingTips(s.id);
+  const housingTipsWithPrice = housingTips.filter(t=>t.precio);
+  const housingCommunityAvg = housingTipsWithPrice.length
+    ? Math.round(housingTipsWithPrice.reduce((a,t)=>a+t.precio,0)/housingTipsWithPrice.length)
+    : null;
   const ultimaValoracion = n ? [...reviewsList].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""))[0].fecha : null;
 
   root.innerHTML = `
@@ -3160,10 +3352,26 @@ function renderSchool(id, params){
         </div>
       </div>
     </div></section>
+    <section class="section container">
+      <div class="housing-card">
+        <div class="housing-card-head">
+          <h2>🏠 Vivir cerca de este colegio</h2>
+        </div>
+        <p class="lead" style="margin:-6px 0 16px;font-size:.94rem">¿Te resultará fácil vivir cerca de este centro? Aquí tienes una referencia de precios y los alojamientos que otros docentes ya han probado y recomiendan.</p>
+        <div class="housing-stats-grid">
+          <div class="housing-stat"><span class="icon">💶</span><div><div class="val">${housingAvgPrice.precio} €/mes</div><div class="lbl">${housingAvgPrice.esDatoDeCiudad?"Precio medio real de la zona":"Precio medio estimado de la zona"}</div></div></div>
+          ${housingCommunityAvg!=null ? `<div class="housing-stat"><span class="icon">🧑‍🏫</span><div><div class="val">${housingCommunityAvg} €/mes</div><div class="lbl">Según ${housingTipsWithPrice.length} docente${housingTipsWithPrice.length===1?"":"s"}${housingTipsWithPrice.length===1?" que ha":"s que han"} vivido cerca</div></div></div>` : ""}
+          <div class="housing-stat"><span class="icon">🏘️</span><div><div class="val">${housingTips.length}</div><div class="lbl">Alojamiento${housingTips.length===1?"":"s"} recomendado${housingTips.length===1?"":"s"} por la comunidad</div></div></div>
+        </div>
+        <a href="#/vivienda/${s.id}" class="btn btn-primary housing-cta">Ver y compartir alojamientos →</a>
+        <p class="muted" style="margin-top:10px;font-size:.76rem">📊 ${housingAvgPrice.fuente}.</p>
+      </div>
+    </section>
     <div class="container doc-layout">
       <nav class="tab-nav" id="tab-nav">${TABS.map(t=>`<button data-tab="${t.id}" class="${t.id===activeTab?"is-active":""}">${t.label}</button>`).join("")}</nav>
       <div class="doc-panel" id="doc-panel"></div>
     </div>`;
+
 
   document.getElementById("fav-toggle").addEventListener("click", ()=>{
     const nowFav = toggleFavorite(s.id);
@@ -3189,6 +3397,7 @@ function renderSchool(id, params){
   renderTabPanel(s, activeTab);
   syncCloudReviews(s);
   syncCloudFieldEdits(s);
+  syncCloudHousingTips(s);
 }
 
 async function syncCloudFieldEdits(school){
@@ -3215,6 +3424,14 @@ async function syncCloudReviews(school){
     const ratingNum = document.getElementById("rating-num");
     const computed = computeScores(school);
     if(ratingNum) ratingNum.textContent = computed ? avgScore(computed).toFixed(1) : "—";
+  }
+}
+async function syncCloudHousingTips(school){
+  if(!isCloudConfigured()) return;
+  const fetched = await fetchHousingTipsRemote(school.id);
+  setCloudHousingTips(school.id, fetched);
+  if(parseHash().path === "/vivienda/"+school.id){
+    renderHousingPage(school.id, parseHash().params);
   }
 }
 

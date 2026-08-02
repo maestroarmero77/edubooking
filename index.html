@@ -2636,11 +2636,15 @@ function renderHousingPage(schoolId, params){
       contacto: document.getElementById("ht-contacto").value.trim()
     };
     const saved = addUserHousingTip(s.id, tip);
-    if(isCloudConfigured()){
-      pushHousingTip(s.id, saved).then(ok => { if(ok) toast("Alojamiento compartido con la comunidad"); });
-    }
-    toast("¡Gracias por compartirlo!");
     renderHousingPage(s.id, params);
+    if(isCloudConfigured()){
+      toast("Guardado — sincronizando con la comunidad…");
+      pushHousingTip(s.id, saved).then(ok => {
+        toast(ok ? "✅ Compartido con la comunidad" : "⚠️ Guardado solo en tu navegador — no se pudo sincronizar con la comunidad (revisa tu conexión o las reglas de Firestore)");
+      });
+    } else {
+      toast("Guardado en tu navegador (la nube no está configurada)");
+    }
   });
 }
 
@@ -3752,13 +3756,17 @@ function bindReviewForm(s){
     const nota = averageOf(scores);
     const volveria = form.dataset.volveria === "true";
     const saved = addUserReview(s.id, {autor:"Tú", nota, fecha:new Date().toISOString().slice(0,10), texto, scores, volveria});
-    if(isCloudConfigured()){
-      pushCloudReview(s.id, saved).then(ok => { if(ok) toast("Opinión compartida con la comunidad"); });
-    }
-    toast("Opinión publicada, ¡gracias por contribuir!");
     // Se repinta la ficha entera: el IRD, el aviso de recomendación y "Experiencia
     // de los docentes" de la cabecera dependen de las opiniones recién publicadas.
     renderSchool(s.id, new URLSearchParams({tab:"ambiente"}));
+    if(isCloudConfigured()){
+      toast("Guardada — sincronizando con la comunidad…");
+      pushCloudReview(s.id, saved).then(ok => {
+        toast(ok ? "✅ Opinión compartida con la comunidad" : "⚠️ Guardada solo en tu navegador — no se pudo sincronizar con la comunidad (revisa tu conexión o las reglas de Firestore)");
+      });
+    } else {
+      toast("Guardada en tu navegador (la nube no está configurada)");
+    }
   });
 }
 
@@ -3888,14 +3896,17 @@ function bindEditFieldButton(s, tab){
       }
       const fecha = new Date().toISOString().slice(0,10);
       setFieldEdit(s.id, field, value, editorName);
-      toast("Cambios guardados, ¡gracias por contribuir!");
       // Se repinta la ficha entera (no solo la pestaña): el bloque destacado y
       // "Información objetiva" de la cabecera dependen de estos mismos datos.
       renderSchool(s.id, new URLSearchParams({tab}));
       if(isCloudConfigured()){
+        toast("Guardado — sincronizando con la comunidad…");
         pushCloudFieldEdit(s.id, field, value, editorName, fecha).then(ok=>{
           if(ok) setCloudFieldEditLocal(s.id, field, {value, autor:editorName, fecha});
+          toast(ok ? "✅ Cambios compartidos con la comunidad" : "⚠️ Guardado solo en tu navegador — no se pudo sincronizar con la comunidad (revisa tu conexión o las reglas de Firestore)");
         });
+      } else {
+        toast("Guardado en tu navegador (la nube no está configurada)");
       }
     });
   });

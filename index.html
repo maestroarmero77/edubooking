@@ -122,6 +122,8 @@ h1,h2,h3 { font-family:var(--font-display); font-weight:700; margin:0 0 .4em; }
 .merece-current-label { font-size:.74rem; text-transform:uppercase; letter-spacing:.06em; opacity:.8; }
 .merece-current-name { font-size:1.2rem; font-weight:700; margin:4px 0 10px; }
 .merece-current-stats { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.merece-warning { background:var(--ochre-tint); border:1px solid var(--ochre); border-radius:var(--radius-m); padding:14px 16px; margin-bottom:18px; font-size:.88rem; line-height:1.5; }
+.merece-warning a { color:var(--teal); font-weight:600; }
 @media (max-width:900px) {
   .minicadp-layout { grid-template-columns:1fr; }
   .minicadp-search-results { max-height:320px; }
@@ -205,7 +207,7 @@ details.rating-group .rating-inputs { padding:2px 12px 12px; }
 .selo .label { font-size:.5rem; text-transform:uppercase; letter-spacing:.06em; margin-top:2px; }
 
 /* ---------- IRD — Índice de Recomendación Docente (dato protagonista) ---------- */
-.ird-selo { width:108px; height:108px; border-radius:50%; border:4px solid var(--teal); background:var(--teal-tint); color:var(--teal); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; text-align:center; }
+.ird-selo { width:108px; height:108px; border-radius:50%; border:4px solid var(--teal); background:var(--paper-raised); color:var(--teal); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; text-align:center; }
 .ird-pct { font-size:2rem; font-weight:800; line-height:1; font-family:var(--font-mono); }
 .ird-pct-empty { font-size:1.5rem; opacity:.6; }
 .ird-caption { font-size:.64rem; text-transform:uppercase; letter-spacing:.04em; margin-top:4px; line-height:1.25; }
@@ -261,11 +263,12 @@ details.rating-group .rating-inputs { padding:2px 12px 12px; }
 .volveria-badge.is-yes { background:var(--teal-tint); color:var(--teal); }
 .volveria-badge.is-no { background:rgba(166,64,47,.12); color:var(--stamp); }
 
-.school-hero { background:var(--teal-strong); color:#fff; padding:30px 0 24px; }
+.school-hero { background:var(--teal-tint); color:var(--ink); padding:30px 0 24px; border-bottom:1px solid var(--line); }
 .school-hero .container { display:flex; flex-direction:column; gap:4px; }
-.school-hero h1 { color:#fff; font-size:clamp(1.4rem,3vw,2rem); }
-.school-hero .tags span { font-size:.72rem; font-family:var(--font-mono); background:rgba(255,255,255,.12); padding:4px 9px; border-radius:999px; margin-right:6px; }
+.school-hero h1 { color:var(--ink); font-size:clamp(1.4rem,3vw,2rem); }
+.school-hero .tags span { font-size:.72rem; font-family:var(--font-mono); background:rgba(22,60,54,.08); color:var(--teal); padding:4px 9px; border-radius:999px; margin-right:6px; }
 .school-hero .actions { margin-top:12px; display:flex; gap:8px; }
+.school-hero .selo { background:var(--paper-raised); }
 
 .doc-layout { display:grid; grid-template-columns:190px 1fr; gap:22px; padding:26px 0 56px; align-items:start; }
 @media (max-width:800px){ .doc-layout{ grid-template-columns:1fr; } }
@@ -300,16 +303,23 @@ details.rating-group .rating-inputs { padding:2px 12px 12px; }
 .chip-row .chip { font-size:.8rem; padding:5px 11px; border-radius:999px; border:1px solid var(--line); background:var(--paper); }
 .chip-row .chip.is-yes { background:var(--teal-tint); border-color:transparent; color:var(--teal); font-weight:700; }
 .chip-row .chip.is-no { color:var(--ink-soft); opacity:.6; }
-.datos-clave { display:flex; flex-wrap:wrap; gap:20px; background:rgba(193,115,46,.22); border:1.5px solid rgba(193,115,46,.45); border-radius:var(--radius-m); padding:14px 18px; margin-top:16px; }
+.stage-chips, .type-chip-group { display:flex; flex-wrap:wrap; gap:8px; }
+.stage-chips .chip, .type-chip-group .chip {
+  font-size:.82rem; padding:7px 14px; border-radius:999px; border:1.5px solid var(--line);
+  background:var(--paper); cursor:pointer; font-family:inherit; color:var(--ink);
+}
+.stage-chips .chip:hover, .type-chip-group .chip:hover { border-color:var(--ochre); transform:translateY(-1px); }
+.stage-chips .chip.is-active, .type-chip-group .chip.is-active { background:var(--teal); border-color:var(--teal); color:#fff; }
+.datos-clave { display:flex; flex-wrap:wrap; gap:20px; background:rgba(193,115,46,.10); border:1.5px solid rgba(193,115,46,.28); border-radius:var(--radius-m); padding:14px 18px; margin-top:16px; }
 .datos-clave-item { min-width:140px; }
 .datos-clave-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; opacity:.85; }
 .datos-clave-value { font-size:1.15rem; font-weight:800; margin-top:3px; line-height:1.25; }
 .datos-clave-note { font-size:.72rem; opacity:.8; margin-top:3px; font-weight:400; }
 @media (max-width:640px) { .datos-clave { gap:12px; padding:12px 14px; } .datos-clave-value { font-size:1rem; } }
 .hero-split { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
-.hero-split-col { border-radius:var(--radius-m); padding:12px 14px; border:1px solid rgba(255,255,255,.14); }
-.hero-split-col.is-objetivo { background:rgba(255,255,255,.05); }
-.hero-split-col.is-experiencia { background:rgba(193,115,46,.16); border-color:rgba(193,115,46,.3); }
+.hero-split-col { border-radius:var(--radius-m); padding:12px 14px; border:1px solid var(--line); }
+.hero-split-col.is-objetivo { background:var(--paper-raised); }
+.hero-split-col.is-experiencia { background:rgba(193,115,46,.08); border-color:rgba(193,115,46,.22); }
 .hero-split-title { font-size:.74rem; text-transform:uppercase; letter-spacing:.05em; opacity:.85; margin-bottom:7px; }
 .hero-split-stats { display:flex; flex-wrap:wrap; gap:7px 12px; font-size:.84rem; }
 @media (max-width:700px){ .hero-split{ grid-template-columns:1fr; } }
@@ -2269,7 +2279,7 @@ function centerSizeCategory(school){ return getDatosObjetivos(school).tamano.uni
 function renderCerca(params){
   const provinciaSel = params.get("provincia") || "";
   const localidadSel = params.get("localidad") || "";
-  const tipo = params.get("tipo") || "";
+  const tipoSel = new Set((params.get("tipo") || "").split(",").filter(Boolean));
   const jornadaFiltro = params.get("jornada") || "";
   const tiempoMax = params.get("tiempo") || "";
   const comedorFiltro = params.get("comedor")==="1";
@@ -2296,13 +2306,17 @@ function renderCerca(params){
           <div class="field"><label for="cerca-localidad">Localidad de residencia</label>
             <select id="cerca-localidad" ${provinciaSel?"":"disabled"}>${localidadOptionsHTML(provinciaSel, localidadSel)}</select></div>
         </div>
-        <div class="search-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="search-row" style="grid-template-columns:1fr 1fr">
           <div class="field"><label for="cerca-tiempo">Tiempo máximo en coche</label>
             <select id="cerca-tiempo"><option value="">Sin límite</option>${TIEMPOS.map(m=>`<option value="${m}" ${tiempoMax===String(m)?"selected":""}>${m} min</option>`).join("")}</select></div>
-          <div class="field"><label for="cerca-tipo">Tipo de centro</label>
-            <select id="cerca-tipo"><option value="">Todos</option>${tipos.map(t=>`<option ${tipo===t?"selected":""}>${t}</option>`).join("")}</select></div>
           <div class="field"><label for="cerca-jornada">Jornada</label>
             <select id="cerca-jornada"><option value="">Cualquiera</option><option value="continua" ${jornadaFiltro==="continua"?"selected":""}>Continua</option><option value="partida" ${jornadaFiltro==="partida"?"selected":""}>Partida</option></select></div>
+        </div>
+        <div class="field">
+          <label>Tipo de centro <span class="muted" style="font-weight:400">(puedes elegir varios)</span></label>
+          <div class="type-chip-group" id="cerca-tipo-chips">
+            ${tipos.map(t=>`<button type="button" class="chip ${tipoSel.has(t)?"is-active":""}" data-tipo="${t}">${t}</button>`).join("")}
+          </div>
         </div>
         <div class="search-row" style="grid-template-columns:1fr 1fr auto">
           <div class="field"><label for="cerca-tamano">Tamaño del centro</label>
@@ -2347,7 +2361,7 @@ function renderCerca(params){
 
   function baseCandidates(){
     let list = SCHOOLS.filter(s => s.lat!=null && s.lng!=null);
-    if(tipo) list = list.filter(s => s.tipo===tipo);
+    if(tipoSel.size) list = list.filter(s => tipoSel.has(s.tipo));
     if(jornadaFiltro){
       list = list.filter(s => {
         const j = (jornadaLabel(s)||"").toLowerCase();
@@ -2398,6 +2412,13 @@ function renderCerca(params){
 
   paint();
 
+  const tipoChipsBox = document.getElementById("cerca-tipo-chips");
+  tipoChipsBox.addEventListener("click", ev => {
+    const chip = ev.target.closest("[data-tipo]");
+    if(!chip) return;
+    chip.classList.toggle("is-active");
+  });
+
   document.getElementById("cerca-form").addEventListener("submit", ev=>{
     ev.preventDefault();
     const p = new URLSearchParams();
@@ -2406,7 +2427,8 @@ function renderCerca(params){
     if(prov) p.set("provincia", prov);
     if(loc) p.set("localidad", loc);
     if(document.getElementById("cerca-tiempo").value) p.set("tiempo", document.getElementById("cerca-tiempo").value);
-    if(document.getElementById("cerca-tipo").value) p.set("tipo", document.getElementById("cerca-tipo").value);
+    const tiposElegidos = [...tipoChipsBox.querySelectorAll(".chip.is-active")].map(c => c.dataset.tipo);
+    if(tiposElegidos.length) p.set("tipo", tiposElegidos.join(","));
     if(document.getElementById("cerca-jornada").value) p.set("jornada", document.getElementById("cerca-jornada").value);
     if(document.getElementById("cerca-tamano").value) p.set("tamano", document.getElementById("cerca-tamano").value);
     if(document.getElementById("cerca-comedor").checked) p.set("comedor", "1");
@@ -2440,12 +2462,18 @@ function renderMerecePena(params){
   const currentId = params.get("actual") || "";
   const tiempoMax = params.get("tiempo") || "20";
   const current = currentId ? SCHOOLS.find(s=>s.id===currentId) : null;
+  const ratedCount = SCHOOLS.filter(s => computeScores(s)).length;
+  const MIN_RATED = 8;
 
   root.innerHTML = `
     <section class="section container" style="max-width:760px">
       <span class="eyebrow">Decide con datos</span>
       <h1>¿Merece la pena cambiar?</h1>
       <p class="lead">Indica dónde trabajas ahora y te mostramos qué centros cercanos representan de verdad una mejora.</p>
+      ${ratedCount < MIN_RATED ? `
+      <div class="merece-warning">
+        ⚠️ <strong>Todavía hay pocas valoraciones en la plataforma</strong> (solo ${ratedCount} centro${ratedCount===1?"":"s"} valorado${ratedCount===1?"":"s"} de momento). Esta función compara tu centro con los cercanos usando las opiniones de la comunidad, así que con tan pocos datos difícilmente vamos a encontrar mejoras claras. Cuantas más personas dejen su opinión, más útil será — <a href="#/buscar">busca tu centro y anímate a valorarlo</a>.
+      </div>` : ""}
       <form class="search-panel" id="merece-form">
         <div class="field"><label for="merece-q">Tu centro actual</label>
           <input type="text" id="merece-q" placeholder="Escribe el nombre de tu centro..." value="${current?current.nombre:""}" autocomplete="off">
@@ -3064,7 +3092,9 @@ function renderSchool(id, params){
   const activeTab = params.get("tab") || "valoraciones";
   const fav = isFavorite(s.id);
   const comparing = isComparing(s.id);
-  const datos = getDatosObjetivos(s);
+  const datosBase = getDatosObjetivos(s);
+  const datosEdit = getBestFieldEdit(s.id, "datos");
+  const datos = datosEdit ? applyDatosEdit(datosBase, datosEdit.value) : datosBase;
   const ird = computedInitial ? computedInitial.ird : null;
   const ultimaValoracion = n ? [...reviewsList].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""))[0].fecha : null;
 
@@ -3264,7 +3294,15 @@ function additiveListContent(s, field, title, emptyMsg, seedRenderer){
 function applyDatosEdit(base, ov){
   const d = {
     general: base.general,
-    tamano: { ...base.tamano, alumnos: ov.alumnos ?? base.tamano.alumnos, lineas: ov.lineas ?? base.tamano.lineas },
+    tamano: {
+      ...base.tamano,
+      alumnos: ov.alumnos ?? base.tamano.alumnos,
+      lineas: ov.lineas ?? base.tamano.lineas,
+      unidades: ov.unidades ?? base.tamano.unidades,
+      udsEI: ov.udsEI ?? base.tamano.udsEI,
+      udsEP: ov.udsEP ?? base.tamano.udsEP,
+      udsEE: ov.udsEE ?? base.tamano.udsEE
+    },
     instalaciones: { ...base.instalaciones, ...(ov.instalaciones||{}) },
     servicios: { ...base.servicios, ...(ov.servicios||{}) },
     entorno: { ...base.entorno, ...(ov.entorno||{}) },
@@ -3390,7 +3428,7 @@ function tabContent(s, tab){
 
       <div id="edit-field-slot" style="margin-top:16px">${editBtn}</div>
 
-      <p class="muted" style="margin-top:20px;font-size:.78rem">${d.tamano.fuenteOficial || d.administracion.fuenteOficial || d.general.fuenteOficial ? "✅ Marcados con ✅: dato oficial (Catálogo de centros de Primaria 2025/26, \"Datos do centro\" y \"Outros datos do centro\" de edu.xunta.gal, todos de la Consellería de Educación) y no se pueden editar. El resto de campos de esta pestaña " : "Estos datos "}${edit ? "han sido corregidos por la comunidad; mientras no se editen de nuevo, se " : "se "}${d.tamano.fuenteOficial || d.administracion.fuenteOficial || d.general.fuenteOficial || edit ? "muestran" : "generan a partir de la información disponible del centro"} de forma constante para cada centro y están preparados para sustituirse por datos reales sin cambiar el resto de la ficha.</p>`;
+      <p class="muted" style="margin-top:20px;font-size:.78rem">${d.tamano.fuenteOficial || d.administracion.fuenteOficial || d.general.fuenteOficial ? "✅ Marcados con ✅: dato oficial (Catálogo de centros de Primaria 2025/26, \"Datos do centro\" y \"Outros datos do centro\" de edu.xunta.gal, todos de la Consellería de Educación). El nombre, dirección, teléfono y titularidad no se pueden editar; el alumnado, las unidades y el horario sí, por si el dato oficial está desactualizado. El resto de campos de esta pestaña " : "Estos datos "}${edit ? "han sido corregidos por la comunidad; mientras no se editen de nuevo, se " : "se "}${d.tamano.fuenteOficial || d.administracion.fuenteOficial || d.general.fuenteOficial || edit ? "muestran" : "generan a partir de la información disponible del centro"} de forma constante para cada centro y están preparados para sustituirse por datos reales sin cambiar el resto de la ficha.</p>`;
   }
   if(tab==="info"){
     const oficial = `
@@ -3540,7 +3578,18 @@ function editFormHTML(s, field){
     const serviciosEditables = Object.entries(SERVICIO_LABELS_DO).filter(([k])=>!((k==="madrugadores"||k==="residencia") && d.servicios.fuenteOficial));
     return `<form class="edit-form" data-field="datos">
       ${nameFieldHTML()}
-      ${!d.tamano.fuenteOficial ? `<div class="search-row" style="grid-template-columns:1fr 1fr"><div class="field"><label>Nº alumnado aprox.</label><input type="number" name="alumnos" value="${d.tamano.alumnos}"></div><div class="field"><label>Nº líneas</label><input type="number" name="lineas" value="${d.tamano.lineas}" min="1"></div></div>` : `<p class="muted" style="margin-bottom:12px;font-size:.8rem">✅ Profesorado y unidades: dato oficial del Catálogo de la Consellería — no editables.</p>`}
+      ${base.tamano.fuenteOficial ? `<p class="muted" style="margin-bottom:10px;font-size:.8rem">✅ El profesorado sigue siendo un dato oficial del Catálogo de la Consellería y no se puede editar. El resto sí, por si está desactualizado.</p>` : ""}
+      <div class="search-row" style="grid-template-columns:1fr 1fr">
+        <div class="field"><label>Nº alumnado aprox.</label><input type="number" name="alumnos" value="${d.tamano.alumnos}" min="0"></div>
+        <div class="field"><label>Nº líneas</label><input type="number" name="lineas" value="${d.tamano.lineas}" min="1"></div>
+      </div>
+      <div class="field"><label>Unidades ${base.tamano.fuenteOficial ? `<span class="muted" style="font-weight:400">(corrige el dato oficial si está desactualizado)</span>` : ""}</label></div>
+      <div class="search-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
+        <div class="field"><label>Infantil</label><input type="number" name="udsEI" value="${d.tamano.udsEI ?? 0}" min="0"></div>
+        <div class="field"><label>Primaria</label><input type="number" name="udsEP" value="${d.tamano.udsEP ?? 0}" min="0"></div>
+        <div class="field"><label>Ed. Especial</label><input type="number" name="udsEE" value="${d.tamano.udsEE ?? 0}" min="0"></div>
+        <div class="field"><label>Total</label><input type="number" name="unidades" value="${d.tamano.unidades}" min="0"></div>
+      </div>
       <div class="field"><label>Instalaciones${d.instalaciones.fuenteOficialComedor?" (comedor no editable: dato oficial)":""}</label>
         <div class="check-pills">${instalacionesEditables.map(([k,meta])=>`<label class="check-pill"><input type="checkbox" name="inst_${k}" ${d.instalaciones[k]?"checked":""}> ${meta.icon} ${meta.label}</label>`).join("")}</div>
       </div>
@@ -3602,8 +3651,12 @@ function bindEditFieldButton(s, tab){
           servicios[k] = fd.get(`serv2_${k}`)==="on";
         });
         value = {
-          alumnos: base.tamano.fuenteOficial ? base.tamano.alumnos : (Number(fd.get("alumnos"))||0),
-          lineas: base.tamano.fuenteOficial ? base.tamano.lineas : (Number(fd.get("lineas"))||1),
+          alumnos: Number(fd.get("alumnos"))||0,
+          lineas: Number(fd.get("lineas"))||1,
+          unidades: Number(fd.get("unidades"))||0,
+          udsEI: Number(fd.get("udsEI"))||0,
+          udsEP: Number(fd.get("udsEP"))||0,
+          udsEE: Number(fd.get("udsEE"))||0,
           instalaciones,
           servicios,
           entorno: { tipo: fd.get("entornoTipo"), distanciaCentroUrbanoKm: Number(fd.get("distanciaKm"))||0, tiempoCocheMin: Number(fd.get("tiempoCoche"))||0, aparcamientoCercano: fd.get("aparcamiento")==="on" },

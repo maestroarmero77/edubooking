@@ -2105,7 +2105,7 @@ function filterSchools(q, provincia, tipo, jornada){
       if(jornada==="partida" && !xornada.includes("partida")) return false;
     }
     return true;
-  });
+  }).sort((a,b)=>a.nombre.localeCompare(b.nombre)); // alfabético, no el orden interno de carga
 }
 
 function renderSearch(params){
@@ -3299,7 +3299,6 @@ const CATALOGO_SERVIZOS = {"15000016":[1,0,0,"Xornada partida",1,1,1,0],"1500010
 const TABS = [
   {id:"valoraciones", label:"Valoraciones"},
   {id:"datos", label:"Datos del centro"},
-  {id:"info", label:"Info práctica"},
   {id:"saber", label:"Lo que debes saber"},
   {id:"ambiente", label:"Opiniones"}
 ];
@@ -3479,7 +3478,6 @@ function renderTabPanel(s, tab){
   const panel = document.getElementById("doc-panel");
   panel.innerHTML = tabContent(s, tab);
   if(tab==="ambiente") bindReviewForm(s);
-  if(tab==="info") bindEditFieldButton(s, tab);
   if(tab==="datos") bindEditFieldButton(s, tab);
   if(tab==="saber") bindAddToListForm(s, tab);
   panel.querySelectorAll(".admin-delete-review").forEach(btn=>{
@@ -3686,34 +3684,6 @@ function tabContent(s, tab){
       <div id="edit-field-slot" style="margin-top:16px">${editBtn}</div>
 
       <p class="muted" style="margin-top:20px;font-size:.78rem">${d.tamano.fuenteOficial || d.administracion.fuenteOficial || d.general.fuenteOficial ? "✅ Marcados con ✅: dato oficial (Catálogo de centros de Primaria 2025/26, \"Datos do centro\" y \"Outros datos do centro\" de edu.xunta.gal, todos de la Consellería de Educación). El nombre, dirección, teléfono y titularidad no se pueden editar; el alumnado, las unidades y el horario sí, por si el dato oficial está desactualizado. El resto de campos de esta pestaña " : "Estos datos "}${edit ? "han sido corregidos por la comunidad; mientras no se editen de nuevo, se " : "se "}${d.tamano.fuenteOficial || d.administracion.fuenteOficial || d.general.fuenteOficial || edit ? "muestran" : "generan a partir de la información disponible del centro"} de forma constante para cada centro y están preparados para sustituirse por datos reales sin cambiar el resto de la ficha.</p>`;
-  }
-  if(tab==="info"){
-    const oficial = `
-      <h3 style="margin-top:${s.curated?"20px":"0"}">Datos de contacto</h3>
-      <div class="info-grid">
-        <div class="info-item"><div class="k">Dirección</div><div class="v">${s.direccion||"—"}</div></div>
-        <div class="info-item"><div class="k">Código postal</div><div class="v">${s.cp||"—"}</div></div>
-        <div class="info-item"><div class="k">Teléfono</div><div class="v">${s.telefono||"—"}</div></div>
-        <div class="info-item"><div class="k">Titularidad</div><div class="v">${s.titularidad||"—"}</div></div>
-      </div>`;
-    const edit = getBestFieldEdit(s.id, "info");
-    const data = edit ? edit.value : (s.horario ? {horario:s.horario, servicios:s.servicios} : null);
-    const isInvented = !edit && (s.curated || s.exampleData);
-    const editBtn = `<button class="btn btn-ghost edit-field-btn" data-edit-field="info">✏️ ${data?"Editar":"Añadir"} esta información</button>`;
-    if(!data){
-      return `<h2>Información práctica</h2>${oficial}<p class="muted" style="margin-top:16px">Aún no hay horario ni servicios registrados por la comunidad para este centro.</p><div id="edit-field-slot" style="margin-top:14px">${editBtn}</div>`;
-    }
-    return `<h2>Información práctica</h2>
-      ${isInvented ? invenetedWarning() : editedNotice(edit)}
-      <div class="info-grid">
-        <div class="info-item"><div class="k">Entrada</div><div class="v">${data.horario.entrada}</div></div>
-        <div class="info-item"><div class="k">Salida</div><div class="v">${data.horario.salida}</div></div>
-        <div class="info-item"><div class="k">Recreo</div><div class="v">${data.horario.recreo}</div></div>
-      </div>
-      <h3 style="margin-top:20px">Servicios</h3>
-      <div class="service-tags">${Object.entries(SERVICE_LABELS).map(([k,label])=>`<span class="${data.servicios[k]?"yes":"no"}">${label}</span>`).join("")}</div>
-      <div id="edit-field-slot" style="margin-top:14px">${editBtn}</div>
-      ${oficial}`;
   }
   if(tab==="saber"){
     return additiveListContent(s, "saber", "Lo que debes saber",

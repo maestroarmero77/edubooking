@@ -372,8 +372,8 @@ details.rating-group .rating-inputs { padding:2px 12px 12px; }
       <a href="#/">Inicio</a>
       <a href="#/buscar">Buscar</a>
       <a href="#/mapa">Mapa</a>
-      <a href="#/cerca">Descubre tu colegio</a>
-      <a href="#/merece-la-pena">¿Merece la pena cambiar?</a>
+      <a href="#/cerca">Ordena por distancia</a>
+      <a href="#/merece-la-pena">Mejora tu destino (en proceso)</a>
       <a href="#/minicadp">Mini CADP</a>
       <a href="#/favoritos">Favoritos</a>
     </nav>
@@ -1929,7 +1929,7 @@ function renderHome(){
     <section class="section container">
       <div class="section-head">
         <div><span class="eyebrow">La comunidad opina</span><h2>Opiniones recientes</h2></div>
-        <a href="#/cerca" class="btn btn-ghost">Descubre tu colegio →</a>
+        <a href="#/cerca" class="btn btn-ghost">Ordena por distancia →</a>
       </div>
       <div class="recent-reviews-grid" id="recent-reviews-grid">${recentReviewsHTML(recentReviews(8))}</div>
     </section>
@@ -2297,7 +2297,7 @@ function renderCerca(params){
   root.innerHTML = `
     <section class="section container">
       <span class="eyebrow">¿Cuál merece más la pena?</span>
-      <h1>Descubre tu colegio</h1>
+      <h1>Ordena por distancia</h1>
       <p class="lead">Indica dónde vives y te ordenamos los centros cercanos por lo que de verdad importa: cercanía, si los docentes volverían a trabajar allí, y su valoración.</p>
       <form class="search-panel" id="cerca-form">
         <div class="search-row" style="grid-template-columns:1fr 1fr">
@@ -2446,7 +2446,7 @@ function renderCerca(params){
   });
 }
 
-/* ---------- ¿Merece la pena cambiar? ---------- */
+/* ---------- Mejora tu destino (en proceso) ---------- */
 function improvementLevel(qualityDelta){
   if(qualityDelta>=0.25) return { label:"Mejora muy alta", tone:"good" };
   if(qualityDelta>=0.12) return { label:"Mejora alta", tone:"mid" };
@@ -2468,7 +2468,7 @@ function renderMerecePena(params){
   root.innerHTML = `
     <section class="section container" style="max-width:760px">
       <span class="eyebrow">Decide con datos</span>
-      <h1>¿Merece la pena cambiar?</h1>
+      <h1>Mejora tu destino (en proceso)</h1>
       <p class="lead">Indica dónde trabajas ahora y te mostramos qué centros cercanos representan de verdad una mejora.</p>
       ${ratedCount < MIN_RATED ? `
       <div class="merece-warning">
@@ -3539,9 +3539,9 @@ function bindReviewForm(s){
       pushCloudReview(s.id, saved).then(ok => { if(ok) toast("Opinión compartida con la comunidad"); });
     }
     toast("Opinión publicada, ¡gracias por contribuir!");
-    renderTabPanel(s, "ambiente");
-    const ratingNum = document.getElementById("rating-num");
-    if(ratingNum) ratingNum.textContent = avgScore(computeScores(s)).toFixed(1);
+    // Se repinta la ficha entera: el IRD, el aviso de recomendación y "Experiencia
+    // de los docentes" de la cabecera dependen de las opiniones recién publicadas.
+    renderSchool(s.id, new URLSearchParams({tab:"ambiente"}));
   });
 }
 
@@ -3672,7 +3672,9 @@ function bindEditFieldButton(s, tab){
       const fecha = new Date().toISOString().slice(0,10);
       setFieldEdit(s.id, field, value, editorName);
       toast("Cambios guardados, ¡gracias por contribuir!");
-      renderTabPanel(s, tab);
+      // Se repinta la ficha entera (no solo la pestaña): el bloque destacado y
+      // "Información objetiva" de la cabecera dependen de estos mismos datos.
+      renderSchool(s.id, new URLSearchParams({tab}));
       if(isCloudConfigured()){
         pushCloudFieldEdit(s.id, field, value, editorName, fecha).then(ok=>{
           if(ok) setCloudFieldEditLocal(s.id, field, {value, autor:editorName, fecha});
